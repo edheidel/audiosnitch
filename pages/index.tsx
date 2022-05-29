@@ -4,7 +4,7 @@ import useIsMobile from "../utils/hooks/useIsMobile";
 
 export default function App() {
   const isMobile = useIsMobile();
-  console.log(`--App isMobile: ${isMobile}`); //Why does component render twice on a resolution change?
+  console.log(`--App isMobile: ${isMobile}`); // Why does component render twice on a resolution change?
 
   return (
     <>
