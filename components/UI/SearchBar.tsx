@@ -1,15 +1,13 @@
 import { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 
-interface ISearchBarProps {}
-
-const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
+export default function SearchBar(_props: any): JSX.Element {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    async function fetchPosts(): Promise<void> {
       try {
         setLoading(true);
         const response = await axios.get(
@@ -22,27 +20,27 @@ const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
         setError(true);
         setLoading(false);
       }
-    };
+    }
     fetchPosts();
   }, []);
 
-  const [searchValue, setSearchValue] = useState("Type an artist name...");
+  const [search, setSearch] = useState("Type an artist name...");
+
   const onChange = (e: { target: { value: SetStateAction<string> } }): void =>
-    setSearchValue(e.target.value);
+    setSearch(e.target.value);
 
   const onSubmit = (e: { preventDefault: () => void }): void => {
     e.preventDefault();
-
-    console.log(`---searching: ${searchValue}`);
-    setSearchValue("");
+    console.log(`---searching: ${search}`);
+    setSearch("");
   };
 
   return (
     <>
       {loading && "Loading..."}
       {error && "Oops, something went wrong. Please try again later!"}
-      <p>Current state: {searchValue}</p>
-      <input type="text" value={searchValue} onChange={onChange} />
+      <p>Current state: {search}</p>
+      <input type="text" value={search} onChange={onChange} />
       <input type="submit" value="Search" onClick={onSubmit} />
 
       {data.map((post) => {
@@ -55,6 +53,4 @@ const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
       })}
     </>
   );
-};
-
-export default SearchBar;
+}
