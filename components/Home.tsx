@@ -1,5 +1,6 @@
 import styles from "../styles/Home.module.css";
 import SearchBar from "./UI/SearchBar";
+import SpotifyGetArtists from "./UI/SpotifyGetArtists";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         <h1>Which music style is this?</h1>
         <p>Start searching now.</p>
         <SearchBar />
+        <SpotifyGetArtists />
       </div>
     </div>
   );

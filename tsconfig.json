@@ -30,7 +30,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "utils/APIController.ts"  ],
   "exclude": [
     "node_modules"
   ]
