@@ -4,8 +4,8 @@ interface ISpotifyGetArtistsProps {
 }
 
 const SpotifyGetArtists: React.FunctionComponent<ISpotifyGetArtistsProps> = (props) => {
-  const [token, setToken] = React.useState("");
-  const [data, setData] = React.useState({});
+  // const [token, setToken] = React.useState("");
+  // const [data, setData] = React.useState({});
   return (
     <button>Get Artists</button>
   );
