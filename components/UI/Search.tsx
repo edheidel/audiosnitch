@@ -7,7 +7,7 @@ import match from "autosuggest-highlight/match";
 
 const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
 
-export default function Search({ token }): JSX.Element {
+export default function Search({ token }: any): JSX.Element {
   const [searchValue, setSearchValue] = useState("");
   const [artistData, setArtistData] = useState();
   const [artistList, setArtistList] = useState([]);
