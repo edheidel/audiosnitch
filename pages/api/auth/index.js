@@ -2,7 +2,7 @@ import axios from "axios";
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-let token = [];
+const token = [];
 
 // Exposes an OAuth token for the Spotify API.
 async function getToken() {
