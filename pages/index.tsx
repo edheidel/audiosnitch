@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function App() {
-  const [token, setToken] = useState([]);
+  const [token, setToken]: any = useState([]);
 
   useEffect(() => {
     axios("/api/auth").then((response) => setToken(response.data));
