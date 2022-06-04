@@ -1,56 +1,55 @@
-import { SetStateAction, useState } from "react";
-import axios from "axios";
+import { SetStateAction, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 
-const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
+const ARTISTS_ENDPOINT = "/api/artists";
 
-export default function Search({ token }: any): JSX.Element {
+export default function Search(): JSX.Element {
+  const [artists, setArtists] = useState<SpotifyApi.ArtistSearchResponse>();
+
   const [searchValue, setSearchValue] = useState("");
-  const [artistData, setArtistData] = useState();
-  const [artistList, setArtistList] = useState([]);
+  const [artistList, setArtistList] = useState();
 
-  const handleInputChange = (e: {
-    target: { value: SetStateAction<string> };
-  }): void => {
-    setSearchValue(e.target.value);
-    updateArtistList();
-  };
+  useEffect(() => {
+    callArtists();
+  }, []);
 
-  const updateArtistList = () => {
-    try {
-      if (searchValue.length > 1) {
-        getArtistData();
-        setArtistList(artistData.items.map((item) => item.name));
-      } else if (searchValue.length <= 1) {
-        setArtistList([]);
-      }
-    } catch (error) {
-      console.log(`--updateArtistList failed: ${error}`);
-    }
-  };
+  async function callArtists(): Promise<void> {
+    await fetch(ARTISTS_ENDPOINT)
+      .then((artists) => artists.json())
+      .then((data) => setArtists(data));
+  }
 
-  const getArtistData = () => {
-    axios(`${SEARCH_ENDPOINT}?q=artist:${searchValue}&type=artist`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => setArtistData(response.data.artists))
-      .catch((error) => console.log(error));
-  };
+  console.log(artists?.artists.items.map((item) => item.name));
+
+  // const handleInputChange = (e: {
+  //   target: { value: SetStateAction<string> };
+  // }): void => {
+  //   setSearchValue(e.target.value);
+  //   updateArtistList();
+  // };
+
+  // const updateArtistList = () => {
+  //   try {
+  //     if (searchValue.length > 1) {
+  //       getArtistData();
+  //       setArtistList(artistData.items.map((item) => item.name));
+  //     } else if (searchValue.length <= 1) {
+  //       setArtistList([]);
+  //     }
+  //   } catch (error) {
+  //     console.log(`--updateArtistList failed: ${error}`);
+  //   }
+  // };
 
   return (
     <>
-      <Autocomplete
+      {/* <Autocomplete
         disablePortal
         id="combo-box"
         options={artistList}
-        // clearOnEscape={true}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -85,9 +84,9 @@ export default function Search({ token }: any): JSX.Element {
           );
         }}
       />
-      <h5 style={{ textAlign: "center" }}>
+      <h5 style={{ textAlign: "center", color: "#00e870" }}>
         {token.length > 0 && <p>token received</p>}
-      </h5>
+      </h5> */}
     </>
   );
 }
