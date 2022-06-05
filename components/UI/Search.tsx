@@ -19,7 +19,7 @@ export default function Search(): JSX.Element {
         .then((artists) => artists.json())
         .then((data) => setArtistData(data))
         .finally(() => {
-          setArtistList(artistData.artists.items.map((item) => item.name));
+          setArtistList(artistData!.artists.items.map((item) => item.name));
           console.log(`--Setting artist list--`);
         });
     } catch (e) {
