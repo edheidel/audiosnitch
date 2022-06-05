@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import parse from "autosuggest-highlight/parse";
@@ -7,46 +7,34 @@ import match from "autosuggest-highlight/match";
 const ARTISTS_ENDPOINT = "/api/artists";
 
 export default function Search(): JSX.Element {
-  const [artists, setArtists] = useState<SpotifyApi.ArtistSearchResponse>();
+  const [artistData, setArtistData] =
+    useState<SpotifyApi.ArtistSearchResponse>();
+  const [searchValue, setSearchValue] = useState<string | null>(null);
+  const [artistList, setArtistList] = useState<string[]>([]);
 
-  const [searchValue, setSearchValue] = useState("");
-  const [artistList, setArtistList] = useState();
-
-  useEffect(() => {
-    callArtists();
-  }, []);
-
-  async function callArtists(): Promise<void> {
-    await fetch(ARTISTS_ENDPOINT)
-      .then((artists) => artists.json())
-      .then((data) => setArtists(data));
+  async function callArtistsAPI(value: string | null): Promise<void> {
+    console.log(`--Calling artists API--`);
+    try {
+      await fetch(`${ARTISTS_ENDPOINT}/${value}`)
+        .then((artists) => artists.json())
+        .then((data) => setArtistData(data))
+        .finally(() => {
+          setArtistList(artistData.artists.items.map((item) => item.name));
+          console.log(`--Setting artist list--`);
+        });
+    } catch (e) {
+      console.log(`--Failed to call Artists API: ${e}`);
+    }
   }
 
-  console.log(artists?.artists.items.map((item) => item.name));
-
-  // const handleInputChange = (e: {
-  //   target: { value: SetStateAction<string> };
-  // }): void => {
-  //   setSearchValue(e.target.value);
-  //   updateArtistList();
-  // };
-
-  // const updateArtistList = () => {
-  //   try {
-  //     if (searchValue.length > 1) {
-  //       getArtistData();
-  //       setArtistList(artistData.items.map((item) => item.name));
-  //     } else if (searchValue.length <= 1) {
-  //       setArtistList([]);
-  //     }
-  //   } catch (error) {
-  //     console.log(`--updateArtistList failed: ${error}`);
-  //   }
-  // };
+  useEffect(() => {
+    callArtistsAPI(searchValue);
+    console.log(`--useEffect was triggered--`);
+  }, [searchValue]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-      {/* <Autocomplete
+      <Autocomplete
         disablePortal
         id="combo-box"
         options={artistList}
@@ -57,7 +45,9 @@ export default function Search(): JSX.Element {
             margin="normal"
           />
         )}
-        onInputChange={handleInputChange}
+        value={searchValue}
+        onChange={(e: any, value: string | null) => setSearchValue(value)}
+        onInputChange={(e: any, value: string | null) => setSearchValue(value)}
         freeSolo={true}
         filterOptions={(x) => x}
         filterSelectedOptions
@@ -65,7 +55,6 @@ export default function Search(): JSX.Element {
         renderOption={(props, option, { inputValue }) => {
           const matches = match(option, inputValue);
           const parts = parse(option, matches);
-
           return (
             <li {...props}>
               <div>
@@ -84,9 +73,6 @@ export default function Search(): JSX.Element {
           );
         }}
       />
-      <h5 style={{ textAlign: "center", color: "#00e870" }}>
-        {token.length > 0 && <p>token received</p>}
-      </h5> */}
     </>
   );
 }
