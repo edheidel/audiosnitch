@@ -10,7 +10,7 @@ export default function Home(): JSX.Element {
     SpotifyApi.ArtistSearchResponse | undefined
   >();
   const [searchValue, setSearchValue] = useState<string | null>(null);
-  const [artistList, setArtistList] = useState<string[]>([]);
+  const [artistList, setArtistList] = useState<{label: string, id: string}[]>([]);
 
   async function callArtistsAPI(value: string | null): Promise<void> {
     console.log(`--Calling artists API--`);
@@ -19,7 +19,14 @@ export default function Home(): JSX.Element {
         .then((artists) => artists.json())
         .then((data) => setArtistData(data))
         .finally(() => {
-          setArtistList(artistData!.artists.items.map((item) => item.name));
+          setArtistList(
+            artistData!.artists.items.map((item) => {
+              return {
+                label: item.name,
+                id: item.id,
+              };
+            })
+          );
           console.log(`--Setting artist list--`);
         });
     } catch (e) {
@@ -35,7 +42,7 @@ export default function Home(): JSX.Element {
   return (
     <div className={styles.container}>
       <div className={styles.container__content}>
-          <h1 className={styles.container__h1}>Which music style is this?</h1>
+        <h1 className={styles.container__h1}>Which music style is this?</h1>
         <SearchBox
           artistList={artistList}
           searchValue={searchValue}

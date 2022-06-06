@@ -30,8 +30,8 @@ export default function SearchButton(props: ISearchButtonProps) {
         onClick={(e) => setGenres(searchedArtist?.genres)}
         sx={{
           marginTop: 1.5,
-          background: "#03a9f4",
-          "&:hover": { background: "#42a5f5" },
+          background: "#42a5f5",
+          "&:hover": { background: "#03a9f4" },
         }}
       >
         Search

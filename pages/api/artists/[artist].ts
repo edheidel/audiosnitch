@@ -25,7 +25,26 @@ const cors = Cors({
   methods: ["GET", "HEAD"],
 });
 
-function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: { ( req: Cors.CorsRequest, res: { statusCode?: number | undefined; setHeader( key: string, value: string ): any; end(): any; }, next: ( err?: any ) => any ): void; ( arg0: NextApiRequest, arg1: NextApiResponse<any>, arg2: ( result: any ) => void ): void; }) {
+function runMiddleware(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  fn: {
+    (
+      req: Cors.CorsRequest,
+      res: {
+        statusCode?: number | undefined;
+        setHeader(key: string, value: string): any;
+        end(): any;
+      },
+      next: (err?: any) => any
+    ): void;
+    (
+      arg0: NextApiRequest,
+      arg1: NextApiResponse<any>,
+      arg2: (result: any) => void
+    ): void;
+  }
+) {
   return new Promise((resolve, reject) => {
     fn(req, res, (result) => {
       if (result instanceof Error) {
@@ -59,7 +78,7 @@ async function fetchToken(): Promise<string> {
 async function fetchArtists(artist: string | string[]): Promise<{}> {
   artists = await axios
     .get<Promise<SpotifyApi.ArtistSearchResponse>>(
-      `${SEARCH_ENDPOINT}?q=artist:${artist}&type=artist`,
+      `${SEARCH_ENDPOINT}?q=artist:${artist}&type=artist&market=ES&limit=10`,
       {
         headers: {
           Authorization: `Bearer ${await fetchToken()}`,
