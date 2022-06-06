@@ -1,43 +1,21 @@
-import { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 
-const ARTISTS_ENDPOINT = "/api/artists";
+export interface ISearchProps {
+  searchValue: string | null;
+  artistList: string[];
+  setSearchValue: any;
+}
 
-export default function Search(): JSX.Element {
-  const [artistData, setArtistData] =
-    useState<SpotifyApi.ArtistSearchResponse>();
-  const [searchValue, setSearchValue] = useState<string | null>(null);
-  const [artistList, setArtistList] = useState<string[]>([]);
-
-  async function callArtistsAPI(value: string | null): Promise<void> {
-    console.log(`--Calling artists API--`);
-    try {
-      await fetch(`${ARTISTS_ENDPOINT}/${value}`)
-        .then((artists) => artists.json())
-        .then((data) => setArtistData(data))
-        .finally(() => {
-          setArtistList(artistData!.artists.items.map((item) => item.name));
-          console.log(`--Setting artist list--`);
-        });
-    } catch (e) {
-      console.log(`--Failed to call Artists API: ${e}`);
-    }
-  }
-
-  useEffect(() => {
-    callArtistsAPI(searchValue);
-    console.log(`--useEffect was triggered--`);
-  }, [searchValue]); // eslint-disable-line react-hooks/exhaustive-deps
-
+export default function Search(props: ISearchProps): JSX.Element {
   return (
     <>
       <Autocomplete
         disablePortal
         id="combo-box"
-        options={artistList}
+        options={props.artistList}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -45,9 +23,11 @@ export default function Search(): JSX.Element {
             margin="normal"
           />
         )}
-        value={searchValue}
-        onChange={(e: any, value: string | null) => setSearchValue(value)}
-        onInputChange={(e: any, value: string | null) => setSearchValue(value)}
+        value={props.searchValue}
+        onChange={(e: any, value: string | null) => props.setSearchValue(value)}
+        onInputChange={(e: any, value: string | null) =>
+          props.setSearchValue(value)
+        }
         freeSolo={true}
         filterOptions={(x) => x}
         filterSelectedOptions
