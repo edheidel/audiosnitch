@@ -1,9 +1,11 @@
 /* eslint-disable */
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
+import Cors from "cors";
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
 
 interface IToken {
   value: string;
@@ -17,8 +19,25 @@ interface IAccountResponse {
 }
 
 let token: IToken;
+let artists: SpotifyApi.ArtistSearchResponse;
 
-export async function fetchToken(): Promise<string> {
+const cors = Cors({
+  methods: ["GET", "HEAD"],
+});
+
+function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: { ( req: Cors.CorsRequest, res: { statusCode?: number | undefined; setHeader( key: string, value: string ): any; end(): any; }, next: ( err?: any ) => any ): void; ( arg0: NextApiRequest, arg1: NextApiResponse<any>, arg2: ( result: any ) => void ): void; }) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
+  });
+}
+
+async function fetchToken(): Promise<string> {
   if (!token || token.expirationDate < Date.now()) {
     token = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -36,11 +55,6 @@ export async function fetchToken(): Promise<string> {
   }
   return token.value;
 }
-
-
-const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
-
-let artists: SpotifyApi.ArtistSearchResponse;
 
 async function fetchArtists(artist: string | string[]): Promise<{}> {
   artists = await axios
@@ -60,6 +74,7 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
+  await runMiddleware(req, res, cors);
   const { artist } = req.query;
   res.status(200).json(await fetchArtists(artist));
 };

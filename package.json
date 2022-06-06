@@ -17,6 +17,7 @@
 		"@mui/material": "^5.8.2",
 		"autosuggest-highlight": "^3.2.1",
 		"axios": "^0.27.2",
+		"cors": "^2.8.5",
 		"lodash": "^4.17.21",
 		"next": "latest",
 		"react": "^18.0.0",
@@ -24,6 +25,7 @@
 	},
 	"devDependencies": {
 		"@types/autosuggest-highlight": "^3.2.0",
+		"@types/cors": "^2.8.12",
 		"@types/lodash": "^4.14.182",
 		"@types/node": "^12.12.21",
 		"@types/react": "^18.0.0",
