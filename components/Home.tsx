@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import Search from "./UI/Search";
+import SearchBox from "./UI/SearchBox";
 import SearchButton from "./UI/SearchButton";
 
 const ARTISTS_ENDPOINT = "/api/artists";
 
 export default function Home(): JSX.Element {
-  const [artistData, setArtistData] =
-    useState<SpotifyApi.ArtistSearchResponse | undefined >();
+  const [artistData, setArtistData] = useState<
+    SpotifyApi.ArtistSearchResponse | undefined
+  >();
   const [searchValue, setSearchValue] = useState<string | null>(null);
   const [artistList, setArtistList] = useState<string[]>([]);
 
@@ -34,9 +35,8 @@ export default function Home(): JSX.Element {
   return (
     <div className={styles.container}>
       <div className={styles.container__content}>
-        <h1>Which music style is this?</h1>
-        <p>Start searching now.</p>
-        <Search
+          <h1 className={styles.container__h1}>Which music style is this?</h1>
+        <SearchBox
           artistList={artistList}
           searchValue={searchValue}
           setSearchValue={setSearchValue}

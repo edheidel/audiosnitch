@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import GenreChips from "./GenreChips";
 
@@ -15,6 +15,10 @@ export default function SearchButton(props: ISearchButtonProps) {
     props.artistData?.artists.items.find(
       ({ name }) => name === props.searchValue
     );
+  
+  useEffect(()=>{
+    setGenres([])
+  }, [searchedArtist])
 
   return (
     <>
@@ -24,10 +28,15 @@ export default function SearchButton(props: ISearchButtonProps) {
         fullWidth={true}
         size="large"
         onClick={(e) => setGenres(searchedArtist?.genres)}
+        sx={{
+          marginTop: 1.5,
+          background: "#03a9f4",
+          "&:hover": { background: "#42a5f5" },
+        }}
       >
         Search
       </Button>
-      <GenreChips genres={genres}/>
+      <GenreChips genres={genres} />
     </>
   );
 }

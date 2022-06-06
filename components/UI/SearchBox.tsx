@@ -9,7 +9,7 @@ export interface ISearchProps {
   setSearchValue: any;
 }
 
-export default function Search(props: ISearchProps): JSX.Element {
+export default function SearchBox(props: ISearchProps): JSX.Element {
   return (
     <>
       <Autocomplete
@@ -19,8 +19,15 @@ export default function Search(props: ISearchProps): JSX.Element {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Type an artist name..."
+            fullWidth
+            sx={{
+              input: { color: "#F7F7F7", margin: 0.2 },
+              label: { color: "#F7F7F7" },
+            }}
+            helperText="Type an artist name"
+            label="Start searching now..."
             margin="normal"
+            variant="outlined"
           />
         )}
         value={props.searchValue}

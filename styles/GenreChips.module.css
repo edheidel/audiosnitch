@@ -1,0 +1,14 @@
+.container {
+  position: absolute;
+  width: 25em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:center;
+  margin: 1em 0em
+}
+
+.container__chip {
+  margin: 0.5em 0.25em;
+  background: #4caf50;
+}
