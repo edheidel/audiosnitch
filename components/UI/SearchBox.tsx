@@ -20,7 +20,7 @@ let artistList: IArtists = [{ name: "", id: "", genres: [""] }];
 let artistData: SpotifyApi.ArtistSearchResponse;
 
 export default function SearchBox(): JSX.Element {
-  const [optionList, setOptionList] = useState<IArtists>([{ name: "Start searching now..", id: "", genres: [] }]);
+  const [optionList, setOptionList] = useState<IArtists>([{ name: "Start searching now...", id: "", genres: [] }]);
   const [selectedArtist, setSelectedArtist] = useState<any>();
   const [genres, setGenres] = useState<string[] | undefined>([]);
 
