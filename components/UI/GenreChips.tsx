@@ -1,21 +1,24 @@
-import * as React from "react";
 import { Chip } from "@mui/material";
 import styles from "../../styles/GenreChips.module.css";
 
-export interface IGenreChipsProps {
+interface IGenreChipsProps {
   genres: string[] | undefined;
 }
 
-export default function GenreChips(props: IGenreChipsProps) {
+export default function GenreChips({ genres }: IGenreChipsProps): JSX.Element {
   return (
     <div className={styles.container}>
-      {props.genres?.map((genre) => (
+      {genres?.map((genre) => (
         <Chip
           className={styles.container__chip}
           label={genre}
           color="info"
+          sx={{ background: "#4caf50" }}
+          component="a"
+          clickable
+          href={`https://en.wikipedia.org/wiki/${genre}`}
+          target="_blank"
           key={genre}
-          sx={{background: "#4caf50"}}
         />
       ))}
     </div>
