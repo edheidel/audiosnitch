@@ -1,5 +1,4 @@
 import { Chip } from "@mui/material";
-import { useEffect } from "react";
 import styles from "../../styles/GenreChips.module.css";
 
 interface IGenreChipsProps {

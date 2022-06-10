@@ -16,11 +16,12 @@ export interface IArtist {
 
 interface IArtists extends Array<IArtist> {}
 
-let artistList: IArtists = [{ name: "", id: "", genres: [""] }];
 let artistData: SpotifyApi.ArtistSearchResponse;
+let artistList: IArtists = [{ name: "", id: "", genres: [""] }];
+const initialOptionList: IArtists = [{ name: "Start searching now...", id: "", genres: [] }];
 
 export default function SearchBox(): JSX.Element {
-  const [optionList, setOptionList] = useState<IArtists>([{ name: "Start searching now...", id: "", genres: [] }]);
+  const [optionList, setOptionList] = useState<IArtists>(initialOptionList);
   const [selectedArtist, setSelectedArtist] = useState<any>();
   const [genres, setGenres] = useState<string[] | null[] | undefined>([]);
 
@@ -49,12 +50,18 @@ export default function SearchBox(): JSX.Element {
     setOptionList(artistList);
   }
 
-  const inputHandler = (event: any, searchValue: string): Promise<void> => callArtistsAPI(searchValue);
+  const inputHandler = (event: any, searchValue: string): void => {
+    if (!searchValue) {
+      setOptionList(initialOptionList);
+    } else {
+      callArtistsAPI(searchValue);
+    }
+  };
   const debouncedInputHandler = debounce(inputHandler, 500);
 
   const onChangeHandler = (event: any, newValue: any): void => {
     if (!newValue) {
-      setOptionList([{ name: "Start searching now...", id: "", genres: [] }]);
+      setOptionList(initialOptionList);
       setGenres([null]);
     } else {
       setSelectedArtist(newValue);
@@ -93,7 +100,7 @@ export default function SearchBox(): JSX.Element {
         autoHighlight={true}
         includeInputInList
         isOptionEqualToValue={(option, value) => option.name === value.name}
-        noOptionsText="Not found, try other name"
+        noOptionsText="Keep on searching..."
         renderInput={(params) => (
           <TextField
             {...params}
