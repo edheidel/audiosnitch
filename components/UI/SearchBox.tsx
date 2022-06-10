@@ -22,10 +22,10 @@ let artistData: SpotifyApi.ArtistSearchResponse;
 export default function SearchBox(): JSX.Element {
   const [optionList, setOptionList] = useState<IArtists>([{ name: "Start searching now...", id: "", genres: [] }]);
   const [selectedArtist, setSelectedArtist] = useState<any>();
-  const [genres, setGenres] = useState<string[] | undefined>([]);
+  const [genres, setGenres] = useState<string[] | null[] | undefined>([]);
 
   async function callArtistsAPI(searchValue: string): Promise<void> {
-    if (searchValue) {
+    if (searchValue.length > 0) {
       await fetch(`${ARTISTS_ENDPOINT}/${searchValue}`)
         .then((response) => response.json())
         .then((response) => {
@@ -53,8 +53,13 @@ export default function SearchBox(): JSX.Element {
   const debouncedInputHandler = debounce(inputHandler, 500);
 
   const onChangeHandler = (event: any, newValue: any): void => {
-    setSelectedArtist(newValue);
-    setGenres(artistData?.artists.items.find((artist) => artist === artist)?.genres);
+    if (!newValue) {
+      setOptionList([{ name: "Start searching now...", id: "", genres: [] }]);
+      setGenres([null]);
+    } else {
+      setSelectedArtist(newValue);
+      setGenres(artistData?.artists.items.find((artist) => artist === artist)?.genres);
+    }
   };
 
   return (
