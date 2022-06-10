@@ -6,8 +6,9 @@ export default function Home(): JSX.Element {
     <div className={styles.container}>
       <div className={styles.container__content}>
         <h1 className={styles.container__h1}>Which music style is this?</h1>
-        <SearchBox />
-        {/* <SearchButton artistData={artistData} searchValue={searchValue} /> */}
+        <div className={styles.container__search}>
+          <SearchBox />
+        </div>
       </div>
     </div>
   );

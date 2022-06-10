@@ -99,6 +99,7 @@ export default function SearchBox(): JSX.Element {
             label="Type an artist name"
             margin="normal"
             variant="outlined"
+            fullWidth={true}
           />
         )}
       />
