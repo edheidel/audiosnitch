@@ -18,7 +18,7 @@ interface IArtists extends Array<IArtist> {}
 
 let artistData: SpotifyApi.ArtistSearchResponse;
 let artistList: IArtists = [{ name: "", id: "", genres: [""] }];
-const initialOptionList: IArtists = [{ name: "Start searching now...", id: "", genres: [] }];
+const initialOptionList: IArtists = [];
 
 export default function SearchBox(): JSX.Element {
   const [optionList, setOptionList] = useState<IArtists>(initialOptionList);
@@ -80,22 +80,26 @@ export default function SearchBox(): JSX.Element {
         renderOption={(props, option, { inputValue }) => {
           const matches = match(option.name, inputValue);
           const parts = parse(option.name, matches);
-          return (
-            <li {...props} key={option.id}>
-              <div>
-                {parts.map((part, index) => (
-                  <span
-                    style={{
-                      fontWeight: part.highlight ? 700 : 400,
-                    }}
-                    key={index}
-                  >
-                    {part.text}
-                  </span>
-                ))}
-              </div>
-            </li>
-          );
+          if (inputValue.length > 0) {
+            return (
+              <li {...props} key={option.id}>
+                <div>
+                  {parts.map((part, index) => (
+                    <span
+                      style={{
+                        fontWeight: part.highlight ? 700 : 400,
+                      }}
+                      key={index}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            );
+          } else {
+            return <></>;
+          }
         }}
         autoHighlight={true}
         includeInputInList
