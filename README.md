@@ -1,15 +1,17 @@
 # Evolution TypeScript bootcamp project
 
-![Banner](https://i.ibb.co/fp6QdkW/banner.png "Banner")
+![Banner](https://user-images.githubusercontent.com/39806020/173252914-c4987705-04c5-4d89-8360-fa5012147d2c.png)
 
 ![GitHub](https://img.shields.io/github/license/edheidel/which-music-style-is-this?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/edheidel/which-music-style-is-this?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/edheidel/which-music-style-is-this)
 ![GitHub deployments](https://img.shields.io/github/deployments/edheidel/which-music-style-is-this/production)
 
-Find genres for music you are listening to. Deployed version: https://which-music-style-is-this.vercel.app/
+Find genres for the music you are listening to.
 
 ![Gif](./demo.gif)
+
+Deployed version: https://which-music-style-is-this.vercel.app/
 
 ## Technologies used
 - TypeScript
@@ -45,4 +47,4 @@ To start unit tests run:
 ```
 yarn test
 ```
-💡 When deploying the app, make sure that `Client ID` and `Client Secret` keys are stored in production `.env` configuration.
+💡 When deploying the app, make sure that the `Client ID` and `Client Secret` keys are stored in a production `.env` configuration.
