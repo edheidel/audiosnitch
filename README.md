@@ -2,10 +2,9 @@
 
 ![Banner](https://user-images.githubusercontent.com/39806020/173252914-c4987705-04c5-4d89-8360-fa5012147d2c.png)
 
-![GitHub](https://img.shields.io/github/license/edheidel/which-music-style-is-this?style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/edheidel/which-music-style-is-this?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/edheidel/which-music-style-is-this)
-![GitHub deployments](https://img.shields.io/github/deployments/edheidel/which-music-style-is-this/production)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/edheidel/which-music-style-is-this?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/edheidel/which-music-style-is-this?style=flat-square)
+![GitHub deployments](https://img.shields.io/github/deployments/edheidel/which-music-style-is-this/production?style=flat-square)
 
 Find genres for the music you are listening to.
 
