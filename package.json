@@ -6,6 +6,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "test": "jest --watch",
     "type-check": "tsc",
     "lint": "next lint"
   },
@@ -23,6 +24,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.0",
     "@types/autosuggest-highlight": "^3.2.0",
     "@types/cors": "^2.8.12",
     "@types/lodash.debounce": "^4.0.7",
@@ -32,12 +36,17 @@
     "@types/spotify-api": "^0.0.16",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
+    "babel-jest": "^28.1.1",
     "cors": "^2.8.5",
     "eslint": "^8.17.0",
     "eslint-config-next": "^12.1.6",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-testing-library": "^5.5.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
     "prettier": "^2.6.2",
     "typescript": "^4.0.0"
   }

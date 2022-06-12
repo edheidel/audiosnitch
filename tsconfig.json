@@ -24,13 +24,17 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2018",
-    "incremental": true
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "utils/APIController.ts"  ],
+, "utils/APIController.ts", "jest.config.js", "jest.setup.js", "__tests__/index.test.tsx"  ],
   "exclude": [
     "node_modules"
   ]
