@@ -1,4 +1,5 @@
-// __mocks__/fileMock.js
+// Read more at "Handling stylesheets and image imports" on https://nextjs.org/docs/testing
+
 module.exports = {
   src: "/img.jpg",
   height: 24,

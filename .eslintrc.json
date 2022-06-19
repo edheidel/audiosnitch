@@ -1,38 +1,35 @@
 {
-  "root": true,
   "env": {
     "browser": true,
     "es2021": true
   },
-  "extends": ["next/core-web-vitals", "prettier"],
-  "plugins": ["@typescript-eslint", "react", "prettier", "testing-library"],
+  "extends": ["plugin:react/recommended", "airbnb", "plugin:@next/next/recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 12,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "plugins": ["react", "@typescript-eslint", "prettier", "testing-library"],
   "overrides": [
     // Only uses Testing Library lint rules in test files
     {
-      "files": [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[jt]s?(x)"
-      ],
+      "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
       "extends": ["plugin:testing-library/react"]
     }
   ],
   "rules": {
-    "require-jsdoc": "off",
-    "no-console": "warn",
-    "prettier/prettier": "warn",
-    "func-names": "off"
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
+    "prettier/prettier": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
+    "no-undef": "off",
+    "@typescript-eslint/no-use-before-define": "error",
+    "no-use-before-define": "off"
   }
 }

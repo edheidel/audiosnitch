@@ -1,11 +1,11 @@
 /* eslint-disable */
 import axios from "axios";
-import type { NextApiRequest, NextApiResponse } from "next";
 import Cors from "cors";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
+const SPOTIFY_SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
 
 interface IToken {
   value: string;
@@ -38,11 +38,7 @@ function runMiddleware(
       },
       next: (err?: any) => any
     ): void;
-    (
-      arg0: NextApiRequest,
-      arg1: NextApiResponse<any>,
-      arg2: (result: any) => void
-    ): void;
+    (arg0: NextApiRequest, arg1: NextApiResponse<any>, arg2: (result: any) => void): void;
   }
 ) {
   return new Promise((resolve, reject) => {
@@ -62,7 +58,7 @@ async function fetchToken(): Promise<string> {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + btoa(`${clientId}:${clientSecret}`),
+        Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
       },
       body: "grant_type=client_credentials",
     })
@@ -78,7 +74,7 @@ async function fetchToken(): Promise<string> {
 async function fetchArtists(artist: string | string[]): Promise<{}> {
   artists = await axios
     .get<Promise<SpotifyApi.ArtistSearchResponse>>(
-      `${SEARCH_ENDPOINT}?q=artist:${artist}&type=artist&market=ES&limit=10`,
+      `${SPOTIFY_SEARCH_ENDPOINT}?q=artist:${artist}&type=artist&market=ES&limit=10`,
       {
         headers: {
           Authorization: `Bearer ${await fetchToken()}`,
@@ -89,10 +85,7 @@ async function fetchArtists(artist: string | string[]): Promise<{}> {
   return artists;
 }
 
-export default async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors);
   const { artist } = req.query;
   res.status(200).json(await fetchArtists(artist));

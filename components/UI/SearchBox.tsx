@@ -1,97 +1,116 @@
-import { useState } from "react";
+import * as React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
 import TextField from "@mui/material/TextField";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import debounce from "lodash.debounce";
+import { observer } from "mobx-react-lite";
+import { artists, genres } from "store";
 import GenreChips from "./GenreChips";
-import { noArtist } from "utils/hooks/noArtist";
 
-const ARTISTS_ENDPOINT = "/api/artists";
+function SearchBox() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [options, setOptions] = React.useState<readonly SpotifyApi.ArtistObjectFull[]>([]);
 
-export default function SearchBox(): JSX.Element {
-  const [artistList, setArtistList] = useState<SpotifyApi.ArtistObjectFull[]>(noArtist);
-  const [selectedArtist, setSelectedArtist] = useState<any>();
-  const [genres, setGenres] = useState<string[] | null[] | undefined>([]);
+  React.useEffect(() => {
+    if (!isOpen) {
+      setOptions([]);
+    }
+  }, [isOpen]);
 
-  async function callArtistsAPI(searchValue: string): Promise<void> {
-    if (searchValue.length > 0) {
-      await fetch(`${ARTISTS_ENDPOINT}/${searchValue}`)
-        .then((response) => response.json())
-        .then((response: SpotifyApi.ArtistSearchResponse) => {
-          setArtistList(response.artists.items.map((item) => item));
-        })
-        .catch((err) => console.log(err)); // eslint-disable-line no-console
+  async function handleInput(event: any, inputValue: string): Promise<void> {
+    if (!inputValue) {
+      setOptions([]);
+    } else {
+      setIsLoading(true);
+      await artists.search(inputValue);
+      setOptions([...artists.data]);
+      setIsLoading(false);
     }
   }
 
-  const inputHandler = (event: any, searchValue: string) => {
-    callArtistsAPI(searchValue);
-  };
+  const debounceInput = debounce(handleInput, 600);
 
-  const debouncedInputHandler = debounce(inputHandler, 500);
-
-  const onChangeHandler = (event: any, newValue: any): void => {
-    if (!newValue) {
-      setArtistList(noArtist);
-      setGenres([null]);
+  function handleOnChange(event: any, newValue: any): void {
+    if (newValue === null) {
+      setOptions([]);
+      genres.update(null);
     } else {
-      setSelectedArtist(newValue);
-      setGenres(artistList.find((artist) => artist === artist)?.genres);
+      genres.update([...options.find((artist: SpotifyApi.ArtistObjectFull) => artist)!.genres]);
     }
-  };
+  }
 
   return (
     <>
       <Autocomplete
         id="search-box"
-        onInputChange={debouncedInputHandler}
-        onChange={onChangeHandler}
-        options={artistList}
-        getOptionLabel={(option: any) => option.name}
-        renderOption={(props, option, { inputValue }) => {
-          const matches = match(option.name, inputValue);
-          const parts = parse(option.name, matches);
-          if (inputValue.length > 0) {
-            return (
-              <li {...props} key={option.id}>
-                <div>
-                  {parts.map((part, index) => (
-                    <span
-                      style={{
-                        fontWeight: part.highlight ? 700 : 400,
-                      }}
-                      key={index}
-                    >
-                      {part.text}
-                    </span>
-                  ))}
-                </div>
-              </li>
-            );
-          } else {
-            return <></>;
-          }
+        loading={isLoading}
+        open={isOpen}
+        onOpen={() => {
+          setIsOpen(true);
         }}
-        autoHighlight={true}
-        includeInputInList
+        onClose={() => {
+          setIsOpen(false);
+        }}
+        options={options}
+        getOptionLabel={(option) => option.name}
         isOptionEqualToValue={(option, value) => option.name === value.name}
-        noOptionsText="Keep on searching..."
+        onInputChange={debounceInput}
+        onChange={handleOnChange}
         renderInput={(params) => (
           <TextField
             {...params}
+            label="Type an artist name"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {isLoading ? <CircularProgress size={20} sx={{ color: "#F7F7F7" }} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }}
+            margin="normal"
+            variant="outlined"
+            fullWidth
             sx={{
               input: { color: "#F7F7F7", margin: 0.2 },
               label: { color: "#F7F7F7" },
             }}
-            label="Type an artist name"
-            margin="normal"
-            variant="outlined"
-            fullWidth={true}
           />
         )}
+        renderOption={(props, option, { inputValue }) => {
+          const matches = match(option.name, inputValue);
+          const parts = parse(option.name, matches);
+          return (
+            <li {...props} key={option.id}>
+              <div>
+                {parts.map((part, index) => (
+                  <span
+                    style={{
+                      fontWeight: part.highlight ? 700 : 400,
+                    }}
+                    key={index} // eslint-disable-line react/no-array-index-key
+                  >
+                    {part.text}
+                  </span>
+                ))}
+              </div>
+            </li>
+          );
+        }}
+        autoHighlight
+        autoComplete
+        blurOnSelect
+        clearOnEscape
+        noOptionsText="Keep on searching..."
+        sx={{ "& .MuiOutlinedInput-notchedOutline": { borderColor: "#F7F7F7" } }}
       />
-      {selectedArtist && <GenreChips genres={genres} />}
+      <GenreChips />
     </>
   );
 }
+
+export default observer(SearchBox);

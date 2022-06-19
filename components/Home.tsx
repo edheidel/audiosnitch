@@ -1,7 +1,7 @@
 import styles from "../styles/Home.module.css";
 import SearchBox from "./UI/SearchBox";
 
-export default function Home(): JSX.Element {
+export default function Home() {
   return (
     <div className={styles.container}>
       <div className={styles.container__content}>

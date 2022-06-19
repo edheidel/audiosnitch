@@ -1,15 +1,12 @@
 import { Chip } from "@mui/material";
+import { genres } from "store";
 import styles from "../../styles/GenreChips.module.css";
 
-interface IGenreChipsProps {
-  genres: string[] | null[] | undefined;
-}
-
-export default function GenreChips({ genres }: IGenreChipsProps): JSX.Element {
+export default function GenreChips() {
   function renderChips() {
-    if (genres && genres[0] != null) {
-      return genres.map((genre) => {
-        return (
+    switch (genres.data && genres.data.length > 0) {
+      case true:
+        return genres.data!.map((genre) => (
           <Chip
             label={genre}
             color="info"
@@ -20,12 +17,11 @@ export default function GenreChips({ genres }: IGenreChipsProps): JSX.Element {
             target="_blank"
             key={genre}
           />
-        );
-      });
-    } else if (genres!.length === 0) {
-      return <>Too underground. No genres found 🥲</>;
-    } else {
-      return <></>;
+        ));
+      case false:
+        return <>Too underground. No genres found 🥲</>;
+      default:
+        return <> </>;
     }
   }
 
