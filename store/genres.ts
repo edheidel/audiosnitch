@@ -10,6 +10,10 @@ class Genres {
   update(newData: string[] | null) {
     this.data = newData;
   }
+
+  clear() {
+    this.data = null;
+  }
 }
 
 export default new Genres();
