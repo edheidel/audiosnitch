@@ -21,25 +21,27 @@ function SearchBox() {
   }, [isOpen]);
 
   async function handleInput(event: any, inputValue: string): Promise<void> {
+    setIsLoading(true);
     if (!inputValue) {
       setOptions([]);
     } else {
-      setIsLoading(true);
-      await artists.search(inputValue);
+      await artists.fetchArtists(inputValue);
       setOptions([...artists.data]);
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }
 
-  const debounceInput = debounce(handleInput, 600);
+  const debounceInput = debounce(handleInput, 700);
 
   function handleOnChange(event: any, newValue: any): void {
     if (newValue === null) {
-      setOptions([]);
-      genres.update(null);
+      genres.clear();
     } else {
-      genres.update([...options.find((artist: SpotifyApi.ArtistObjectFull) => artist)!.genres]);
+      genres.update([
+        ...artists.data.find((artist: SpotifyApi.ArtistObjectFull) => artist.name === newValue.name).genres,
+      ]);
     }
+    setOptions([]);
   }
 
   return (
@@ -102,9 +104,9 @@ function SearchBox() {
           );
         }}
         autoHighlight
-        autoComplete
         blurOnSelect
         clearOnEscape
+        filterSelectedOptions
         noOptionsText="Keep on searching..."
         sx={{ "& .MuiOutlinedInput-notchedOutline": { borderColor: "#F7F7F7" } }}
       />
