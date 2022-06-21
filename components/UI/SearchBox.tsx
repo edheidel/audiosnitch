@@ -57,7 +57,7 @@ function SearchBox() {
           setIsOpen(false);
         }}
         options={options}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option: SpotifyApi.ArtistObjectFull) => option.name}
         isOptionEqualToValue={(option, value) => option.name === value.name}
         onInputChange={debounceInput}
         onChange={handleOnChange}

@@ -1,8 +1,9 @@
 import { Chip } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { genres } from "store";
 import styles from "../../styles/GenreChips.module.css";
 
-export default function GenreChips() {
+function GenreChips() {
   function renderChips() {
     switch (genres.data && genres.data.length > 0) {
       case true:
@@ -27,3 +28,5 @@ export default function GenreChips() {
 
   return <div className={styles.container}>{renderChips()}</div>;
 }
+
+export default observer(GenreChips);
