@@ -16,6 +16,7 @@ module.exports = {
     "^@/components/(.*)$": "<rootDir>/components/$1",
     "^@/pages/(.*)$": "<rootDir>/pages/$1",
     store: "<rootDir>/store/index.ts",
+    "utils/dragDrop": "<rootDir>/utils/dragDrop.ts",
   },
   // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],

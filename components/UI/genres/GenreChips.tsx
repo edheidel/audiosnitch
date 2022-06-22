@@ -1,7 +1,6 @@
 import { Chip } from "@mui/material";
-import { observer } from "mobx-react-lite";
 import { genres } from "store";
-import styles from "../../styles/GenreChips.module.css";
+import styles from "../../../styles/ChipContainer.module.scss";
 
 function GenreChips() {
   function renderChips() {
@@ -11,7 +10,7 @@ function GenreChips() {
           <Chip
             label={genre}
             color="info"
-            sx={{ background: "#4caf50", margin: 0.75 }}
+            sx={{ background: "#4caf50", margin: 0.8 }}
             component="a"
             clickable
             href={`https://en.wikipedia.org/wiki/${genre}`}
@@ -20,13 +19,13 @@ function GenreChips() {
           />
         ));
       case false:
-        return <>Too underground. No genres found 🥲</>;
+        return <div className={styles.noGenres}>Too underground. No genres found 🥲</div>;
       default:
         return <> </>;
     }
   }
 
-  return <div className={styles.container}>{renderChips()}</div>;
+  return <div>{renderChips()}</div>;
 }
 
-export default observer(GenreChips);
+export default GenreChips;

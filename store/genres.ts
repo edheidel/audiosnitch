@@ -7,8 +7,8 @@ class Genres {
     makeAutoObservable(this);
   }
 
-  update(newData: string[] | null) {
-    this.data = newData;
+  update(genres: string[] | null) {
+    this.data = genres;
   }
 
   clear() {
