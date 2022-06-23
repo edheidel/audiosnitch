@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 
-class Drag {
+class DragStore {
   isActive: boolean = false;
 
   constructor() {
@@ -12,4 +12,4 @@ class Drag {
   }
 }
 
-export default new Drag();
+export default new DragStore();

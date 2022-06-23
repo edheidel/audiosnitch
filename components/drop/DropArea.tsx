@@ -1,12 +1,11 @@
-import * as React from "react";
-import { observer } from "mobx-react-lite";
+import React from "react";
 import { dragStartHandler, dragLeaveHandler, dropHandler } from "utils/dragDrop";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import { observer } from "mobx-react-lite";
+import styles from "../../styles/DropArea.module.scss";
 
-import styles from "../../../styles/DropArea.module.scss";
-
-function DropArea() {
+function DropArea(): JSX.Element {
   return (
     <div
       className={styles.dropArea}
@@ -15,7 +14,7 @@ function DropArea() {
       onDragOver={(e) => dragStartHandler(e)}
       onDrop={async (e) => dropHandler(e)}
     >
-      <FontAwesomeIcon icon={faSpotify} className={styles.icon} />
+      <FontAwesomeIcon className={styles.icon} icon={faSpotify} />
       <div className={styles.title}>Drag an artist name here</div>
     </div>
   );

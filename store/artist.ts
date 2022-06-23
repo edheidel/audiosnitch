@@ -1,11 +1,9 @@
 import { makeAutoObservable } from "mobx";
 
-class Artists {
-  data: SpotifyApi.ArtistObjectFull[] = [];
-
-  options: SpotifyApi.ArtistObjectFull[] = [];
-
+class ArtistStore {
   id: string = "";
+
+  data: SpotifyApi.ArtistObjectFull[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -13,15 +11,6 @@ class Artists {
 
   saveId(artistId: string) {
     this.id = artistId;
-  }
-
-  async fetchArtists(searchValue: string): Promise<void> {
-    await fetch(`/api/search/${searchValue}`)
-      .then((response) => response.json())
-      .then((json: SpotifyApi.ArtistSearchResponse) => {
-        this.options = json.artists.items.map((item) => item);
-      })
-      .catch((err) => console.log("Search API call:", err)); // eslint-disable-line no-console
   }
 
   async fetchArtistById(artistId: string): Promise<void> {
@@ -33,14 +22,14 @@ class Artists {
       .catch((err) => console.log("Artist API call:", err)); // eslint-disable-line no-console
   }
 
+  clear() {
+    this.data.length = 0;
+  }
+
   update(artist: SpotifyApi.ArtistObjectFull) {
     this.clear();
     this.data.push(artist);
   }
-
-  clear() {
-    this.data.length = 0;
-  }
 }
 
-export default new Artists();
+export default new ArtistStore();

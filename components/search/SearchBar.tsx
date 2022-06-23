@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-boolean-value */
-import * as React from "react";
+import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import TextField from "@mui/material/TextField";
@@ -7,9 +7,10 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import debounce from "lodash.debounce";
 import { observer } from "mobx-react-lite";
-import { artists, genres } from "store";
+import artistList from "store/artistList";
+import artist from "store/artist";
 
-function SearchBar() {
+function SearchBar(): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [options, setOptions] = React.useState<readonly SpotifyApi.ArtistObjectFull[]>([]);
@@ -21,25 +22,23 @@ function SearchBar() {
   }, [isOpen]);
 
   async function inputHandler(event: any, inputValue: string): Promise<void> {
-    setIsLoading(true);
     if (!inputValue) {
       setOptions([]);
     } else {
-      await artists.fetchArtists(inputValue);
-      setOptions([...artists.options]);
+      setIsLoading(true);
+      await artistList.fetchArtists(inputValue);
+      setOptions(artistList.options);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }
 
   const debounceInput = debounce(inputHandler, 700);
 
   function onChangeHandler(event: any, newValue: any): void {
     if (newValue === null) {
-      genres.clear();
-      artists.clear();
+      artist.clear();
     } else {
-      genres.update(newValue.genres);
-      artists.update(newValue);
+      artist.update(newValue);
     }
     setOptions([]);
   }
@@ -108,7 +107,6 @@ function SearchBar() {
       noOptionsText="Keep on searching..."
       sx={{
         "& .MuiOutlinedInput-notchedOutline": { borderColor: "#F7F7F7" },
-        // "& .Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#F7F7F7" },
       }}
     />
   );

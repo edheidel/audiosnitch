@@ -1,4 +1,5 @@
-import { drag, artists, genres } from "store";
+import drag from "store/drag";
+import artist from "store/artist";
 
 export function dragStartHandler(event: any) {
   event.preventDefault();
@@ -11,9 +12,9 @@ export function dragLeaveHandler(event: any) {
 }
 
 export async function dropHandler(event: any) {
+  const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
   event.preventDefault();
-  artists.saveId([...event.dataTransfer.getData("text/uri-list")].slice(-22).join(""));
-  await artists.fetchArtistById(artists.id);
-  genres.update([...artists.data[0].genres]);
+  artist.saveId(spotifyArtistId);
+  await artist.fetchArtistById(artist.id);
   drag.enableDrop(false);
 }

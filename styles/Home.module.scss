@@ -2,11 +2,11 @@
   background-image: linear-gradient(15deg, #7b1fa2 5%, #03a9f4 110%);
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   animation: pulse 30s linear infinite;
 
   @keyframes pulse {
