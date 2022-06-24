@@ -2,7 +2,6 @@ import React from "react";
 import { Chip } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import artist from "store/artist";
-import styles from "../../styles/ChipContainer.module.scss";
 
 function renderChips() {
   if (artist.data && artist.data.length > 0 && artist.data[0].genres.length > 0) {
@@ -19,13 +18,10 @@ function renderChips() {
       />
     ));
   }
-  if (artist.data && artist.data.length > 0 && artist.data[0].genres.length === 0) {
-    return <div className={styles.noGenres}>Too underground. No genres found 🥲</div>;
-  }
   return null;
 }
 
-function GenreChips(): JSX.Element {
+function GenreChips(): JSX.Element | null {
   return <>{renderChips()}</>;
 }
 

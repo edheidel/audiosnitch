@@ -1,21 +1,54 @@
 import React from "react";
-import { dragStartHandler, dragLeaveHandler, dropHandler } from "utils/dragDrop";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { observer } from "mobx-react-lite";
-import styles from "../../styles/DropArea.module.scss";
+import drag from "store/drag";
+import artist from "store/artist";
+import similarArtists from "store/similarArtists";
+import styles from "./DropArea.module.scss";
+
+function dragStartHandler(event: any): void {
+  event.preventDefault();
+  drag.enableDrop(true);
+}
+
+function dragLeaveHandler(event: any): void {
+  event.preventDefault();
+  drag.enableDrop(false);
+}
+
+async function dropHandler(event: any): Promise<void> {
+  const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
+  event.preventDefault();
+  artist.saveId(spotifyArtistId);
+  await artist.fetchArtistById(artist.id);
+  similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+  drag.enableDrop(false);
+  setTimeout(() => window.scrollTo(0, 800), 500);
+}
 
 function DropArea(): JSX.Element {
-  return (
+  return drag.isActive ? (
     <div
-      className={styles.dropArea}
+      className={styles.dropArea_active}
       onDragStart={(e) => dragStartHandler(e)}
       onDragLeave={(e) => dragLeaveHandler(e)}
       onDragOver={(e) => dragStartHandler(e)}
       onDrop={async (e) => dropHandler(e)}
     >
-      <FontAwesomeIcon className={styles.icon} icon={faSpotify} />
-      <div className={styles.title}>Drag an artist name here</div>
+      <FontAwesomeIcon className={styles.icon_active} icon={faSpotify} />
+      <div className={styles.title_active}>Drop an artist here</div>
+    </div>
+  ) : (
+    <div
+      className={styles.dropArea_inactive}
+      onDragStart={(e) => dragStartHandler(e)}
+      onDragLeave={(e) => dragLeaveHandler(e)}
+      onDragOver={(e) => dragStartHandler(e)}
+      onDrop={async (e) => dropHandler(e)}
+    >
+      <FontAwesomeIcon className={styles.icon_inactive} icon={faSpotify} />
+      <div className={styles.title_inactive}>Drag a Spotify artist here</div>
     </div>
   );
 }

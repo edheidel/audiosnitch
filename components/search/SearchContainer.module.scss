@@ -1,7 +1,10 @@
 .body {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
   width: 70vw;
   max-width: 500px;
-  text-align: center;
+  margin-top: min(15vh);
 }
 
 .title {

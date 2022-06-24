@@ -9,6 +9,8 @@ import debounce from "lodash.debounce";
 import { observer } from "mobx-react-lite";
 import artistList from "store/artistList";
 import artist from "store/artist";
+import similarArtists from "store/similarArtists";
+import drag from "store/drag";
 
 function SearchBar(): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -37,8 +39,13 @@ function SearchBar(): JSX.Element {
   function onChangeHandler(event: any, newValue: any): void {
     if (newValue === null) {
       artist.clear();
+      if (drag.isActive) {
+        similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+      }
     } else {
       artist.update(newValue);
+      similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+      setTimeout(() => window.scrollTo(0, 800), 500);
     }
     setOptions([]);
   }
