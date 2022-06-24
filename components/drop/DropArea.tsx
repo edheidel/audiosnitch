@@ -20,6 +20,7 @@ function dragLeaveHandler(event: any): void {
 async function dropHandler(event: any): Promise<void> {
   const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
   event.preventDefault();
+  similarArtists.clear();
   artist.saveId(spotifyArtistId);
   await artist.fetchArtistById(artist.id);
   similarArtists.fetchSimilarArtists(artist.data[0]?.id);

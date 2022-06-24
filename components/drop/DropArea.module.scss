@@ -11,25 +11,6 @@
   height: 70vh;
   max-height: 500px;
   margin-top: 2rem;
-  animation: pulse 30s linear infinite;
-
-  @keyframes pulse {
-    0% {
-      background-size: 100% auto;
-    }
-    25% {
-      background-size: 350% auto;
-    }
-    50% {
-      background-size: 150% auto;
-    }
-    75% {
-      background-size: 300% auto;
-    }
-    100% {
-      background-size: 100% auto;
-    }
-  }
 }
 
 .dropArea_inactive {
@@ -80,12 +61,12 @@
   margin: 5rem;
   font-size: 25rem;
   max-width: 50vw;
-  opacity: 0.1;
   animation: breathe 2s linear infinite;
 
   @keyframes breathe {
     0% {
       transform: scale(1);
+      opacity: 1;
     }
     50% {
       transform: scale(1.025);
@@ -93,6 +74,7 @@
     }
     100% {
       transform: scale(1);
+      opacity: 1;
     }
   }
 }

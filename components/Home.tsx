@@ -10,25 +10,29 @@ import GenreChips from "./genre-chips/GenreChips";
 import SimilarArtistsTitle from "./similar-artists/SimilarArtistsTitle";
 import SimilarArtistsContainer from "./similar-artists/SimilarArtistsContainer";
 import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
+import ScrollToTopButton from "./scroll/ScrollToTopButton";
 
 function Home(): JSX.Element {
   return (
-    <div className={styles.container}>
-      <SearchContainer>
-        <SearchBar />
-      </SearchContainer>
-      <DropArea />
-      <div className={styles.results}>
-        <ChipContainer>
-          <ChipContainerTitle />
-          <GenreChips />
-        </ChipContainer>
-        <SimilarArtistsContainer>
-          <SimilarArtistsTitle />
-          <SimilarArtistCards />
-        </SimilarArtistsContainer>
+    <>
+      <div className={styles.container}>
+        <SearchContainer>
+          <SearchBar />
+        </SearchContainer>
+        <DropArea />
+        <div className={styles.results}>
+          <ChipContainer>
+            <ChipContainerTitle />
+            <GenreChips />
+          </ChipContainer>
+          <SimilarArtistsContainer>
+            <SimilarArtistsTitle />
+            <SimilarArtistCards />
+          </SimilarArtistsContainer>
+        </div>
       </div>
-    </div>
+      <ScrollToTopButton />
+    </>
   );
 }
 

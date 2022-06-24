@@ -15,6 +15,10 @@ class SimilarArtistsStore {
       })
       .catch((err) => console.log("Related Artists API call:", err)); // eslint-disable-line no-console
   }
+
+  clear() {
+    this.data.length = 0;
+  }
 }
 
 export default new SimilarArtistsStore();
