@@ -25,7 +25,7 @@ async function dropHandler(event: any): Promise<void> {
   await artist.fetchArtistById(artist.id);
   similarArtists.fetchSimilarArtists(artist.data[0]?.id);
   drag.enableDrop(false);
-  setTimeout(() => window.scrollTo(0, 800), 500);
+  setTimeout(() => window.scrollTo(0, 755), 500);
 }
 
 function DropArea(): JSX.Element {

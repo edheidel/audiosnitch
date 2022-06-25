@@ -17,6 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@mui/base": "^5.0.0-alpha.86",
     "@mui/material": "^5.8.2",
     "autosuggest-highlight": "^3.2.1",
     "axios": "^0.27.2",

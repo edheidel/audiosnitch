@@ -1,0 +1,38 @@
+.nav_visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  background-color: rgb(20, 20, 20);
+  width: 100vw;
+  max-height: 8vh;
+  height: 75px;
+  opacity: 1;
+  z-index: 9000;
+  animation: fade-in 0.25s;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+.nav_invisible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  height: 10vh;
+  opacity: 0;
+}

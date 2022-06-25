@@ -45,7 +45,7 @@ function SearchBar(): JSX.Element {
     } else {
       artist.update(newValue);
       similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      setTimeout(() => window.scrollTo(0, 800), 500);
+      setTimeout(() => window.scrollTo(0, 755), 500);
     }
     setOptions([]);
   }
@@ -80,7 +80,7 @@ function SearchBar(): JSX.Element {
             ),
           }}
           variant="outlined"
-          fullWidth
+          // fullWidth
           sx={{
             input: { color: "#F7F7F7", margin: 0.2 },
             label: { color: "#F7F7F7" },

@@ -11,10 +11,12 @@ import SimilarArtistsTitle from "./similar-artists/SimilarArtistsTitle";
 import SimilarArtistsContainer from "./similar-artists/SimilarArtistsContainer";
 import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
 import ScrollToTopButton from "./scroll/ScrollToTopButton";
+import NavSearchBar from "./navbar/NavSearchBar";
 
 function Home(): JSX.Element {
   return (
     <>
+      <NavSearchBar />
       <div className={styles.container}>
         <SearchContainer>
           <SearchBar />

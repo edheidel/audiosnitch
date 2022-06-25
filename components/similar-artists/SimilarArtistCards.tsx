@@ -9,7 +9,7 @@ import similarArtists from "store/similarArtists";
 function SimilarArtistCards() {
   return (
     <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-      {similarArtists.data[0]?.artists.map((similarArtist) => (
+      {similarArtists.data[0]?.artists.slice(0, 15).map((similarArtist) => (
         <ListItem
           key={artist.id}
           secondaryAction={
