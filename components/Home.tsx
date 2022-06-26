@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import styles from "./Home.module.scss";
+import useIsMobile from "../utils/hooks/useIsMobile";
 import DropArea from "./drop/DropArea";
 import SearchContainer from "./search/SearchContainer";
 import SearchBar from "./search/SearchBar";
@@ -12,8 +12,11 @@ import SimilarArtistsContainer from "./similar-artists/SimilarArtistsContainer";
 import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
 import ScrollToTopButton from "./scroll/ScrollToTopButton";
 import NavSearchBar from "./navbar/NavSearchBar";
+import styles from "./Home.module.scss";
 
 function Home(): JSX.Element {
+  const isMobile = useIsMobile();
+
   return (
     <>
       <NavSearchBar />
@@ -21,7 +24,7 @@ function Home(): JSX.Element {
         <SearchContainer>
           <SearchBar />
         </SearchContainer>
-        <DropArea />
+        {!isMobile && <DropArea />} {/* Renders drag and drop component for the desktop version */}
         <div className={styles.results}>
           <ChipContainer>
             <ChipContainerTitle />

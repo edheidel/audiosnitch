@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-// Hook creates a boolean flag on window's width change.
+// Hook creates a boolean isMobile flag on window width change.
 export default function useIsMobile() {
   const [isMobile, setIsMobile] = useState(null || Boolean);
 
