@@ -15,6 +15,10 @@ class ArtistList {
       })
       .catch((err) => console.log("Search API call:", err)); // eslint-disable-line no-console
   }
+
+  clear() {
+    this.options.length = 0;
+  }
 }
 
 export default new ArtistList();

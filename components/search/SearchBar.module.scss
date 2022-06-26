@@ -1,0 +1,18 @@
+.searchIcon {
+  top: 50%;
+  transform: translate(0, 110%);
+  padding: 0 0.5rem 0 1rem;
+  color: whitesmoke;
+  font-size: 1.1rem;
+  padding-right: 0.8rem;
+}
+
+.crossIcon {
+  top: 50%;
+  transform: translate(0, 80%);
+  margin-right: 0.5rem;
+  color: whitesmoke;
+  font-size: 1.4rem;
+  padding-right: 0.8rem;
+  cursor: pointer;
+}

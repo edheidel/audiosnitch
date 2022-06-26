@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import artist from "store/artist";
 import similarArtists from "store/similarArtists";
 
 function SimilarArtistCards() {
@@ -11,7 +10,7 @@ function SimilarArtistCards() {
     <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
       {similarArtists.data[0]?.artists.slice(0, 15).map((similarArtist) => (
         <ListItem
-          key={artist.id}
+          key={similarArtist.id}
           secondaryAction={
             <div>
               <IconButton

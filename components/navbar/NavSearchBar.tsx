@@ -2,20 +2,35 @@ import React from "react";
 import { useAutocomplete } from "@mui/base/AutocompleteUnstyled";
 import { styled } from "@mui/material/styles";
 import { autocompleteClasses } from "@mui/material/Autocomplete";
+import parse from "autosuggest-highlight/parse";
+import match from "autosuggest-highlight/match";
 import debounce from "lodash.debounce";
 import { observer } from "mobx-react-lite";
 import artistList from "store/artistList";
 import artist from "store/artist";
 import similarArtists from "store/similarArtists";
 import drag from "store/drag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavSearchBar.module.scss";
 
 const StyledRoot = styled("div")(
-  ({ theme }) => `
-  color: ${theme.palette.mode === "dark" ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,.85)"};
-  font-size: 0.9rem;
-  width: 400px;
+  () => `
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1rem;
+  width: 350px;
   max-width: 70vw;
+  border: 1px solid whitesmoke;
+  border-radius: 2rem;
+  background-color: #FFFFFF;
+
+  :focus-within {
+    box-shadow: 0 0 5px #9ecaed;
+  }
 `
 );
 
@@ -23,20 +38,24 @@ const StyledInput = styled("input")(
   () => `
   width: 100%;
   height: 2.5rem;
-  padding: 0 0 0 1.5rem;
-  background-color: #FFFFFF;
-  color: rgba(0, 0, 0, 0.6);
-  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0.8);  
   border: 0;
-  margin: 0;
   outline: 0;
+
+  ::placeholder{
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.4);
+  }
 `
 );
 
 const StyledListbox = styled("ul")(
   ({ theme }) => `
+  position: absolute;
+  width: 300px;
   max-width: 70vw;
-  margin: 1px 0 0;
+  margin: 2.7rem 0 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   list-style: none;
@@ -45,13 +64,12 @@ const StyledListbox = styled("ul")(
   max-height: 20rem;
   border-radius: 3px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-  z-index: 9001;
   cursor: pointer;
 
   & li {
     padding: 0.5rem 1.5rem;
     display: flex;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.8);
     cursor: pointer;
   }
 
@@ -63,9 +81,9 @@ const StyledListbox = styled("ul")(
 `
 );
 
-function NavSearchBar() {
+function NavSearchBar(): JSX.Element {
   const [isVisible, setIsVisible] = React.useState(false);
-  const [list, setList] = React.useState<readonly SpotifyApi.ArtistObjectFull[]>([]);
+  const [inputValue, setInputValue] = React.useState<string>("");
 
   function toggleVisibility(): void {
     if (window.scrollY > 750) {
@@ -79,50 +97,81 @@ function NavSearchBar() {
     window.addEventListener("scroll", toggleVisibility);
   }, []);
 
-  async function inputHandler(event: any, inputValue: string): Promise<void> {
-    if (!inputValue) {
-      setList([]);
-    } else {
-      await artistList.fetchArtists(inputValue);
-      setList(artistList.options);
-    }
+  const debouncedFetch = React.useCallback(
+    debounce((value) => artistList.fetchArtists(value), 500),
+    []
+  );
+
+  async function handleInputChange(event: any) {
+    const { value } = event.target;
+    setInputValue(value);
+    debouncedFetch(value);
   }
 
-  const debounceInput = debounce(inputHandler, 700);
+  function clearInput() {
+    setInputValue("");
+    artistList.clear();
+  }
 
-  function onChangeHandler(event: any, newValue: any): void {
-    if (newValue === null) {
+  function handleSubmit(event: any, value: any) {
+    if (value === null) {
       artist.clear();
       if (drag.isActive) {
         similarArtists.fetchSimilarArtists(artist.data[0]?.id);
       }
     } else {
-      artist.update(newValue);
+      artist.update(value);
       similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      setTimeout(() => window.scrollTo(0, 800), 500);
+      setTimeout(() => window.scrollTo(0, 765), 500);
     }
-    setList([]);
+    setInputValue("");
+    artistList.clear();
   }
 
   const { getRootProps, getInputProps, getListboxProps, getOptionProps, groupedOptions } = useAutocomplete({
-    options: list,
+    options: artistList.options,
     getOptionLabel: (option) => option.name,
-    onInputChange: debounceInput,
-    onChange: onChangeHandler,
+    onChange: handleSubmit,
+    autoHighlight: true,
   });
 
   return (
     <div className={isVisible ? styles.nav_visible : styles.nav_invisible}>
       <StyledRoot {...getRootProps()}>
-        <StyledInput {...getInputProps()} placeholder="Search for other artists" />
-        {list.length > 0 && groupedOptions.length > 0 ? (
+        <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+        <StyledInput
+          {...getInputProps()}
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Search for other artists"
+        />
+        {inputValue.length > 0 && groupedOptions.length > 0 ? (
           <StyledListbox {...getListboxProps()}>
-            {groupedOptions.map((option: any, index) => (
-              <li {...getOptionProps({ option, index })} key={option.id}>
-                <span>{option.name}</span>
-              </li>
-            ))}
+            {groupedOptions.map((option: any, index: number) => {
+              const matches = match(option.name, inputValue);
+              const parts = parse(option.name, matches);
+              return (
+                <li {...getOptionProps({ option, index })} key={option.id}>
+                  <div>
+                    {parts.map((part, idx) => (
+                      <span
+                        style={{
+                          fontWeight: part.highlight ? 700 : 400,
+                        }}
+                        key={idx} // eslint-disable-line react/no-array-index-key
+                      >
+                        {part.text}
+                      </span>
+                    ))}
+                  </div>
+                </li>
+              );
+            })}
           </StyledListbox>
+        ) : null}
+        {inputValue.length > 0 ? (
+          <FontAwesomeIcon icon={faXmark} className={styles.crossIcon} onClick={clearInput} />
         ) : null}
       </StyledRoot>
     </div>

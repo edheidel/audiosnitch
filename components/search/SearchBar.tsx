@@ -1,121 +1,168 @@
-/* eslint-disable react/jsx-boolean-value */
 import React from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import CircularProgress from "@mui/material/CircularProgress";
-import TextField from "@mui/material/TextField";
+import { useAutocomplete } from "@mui/base/AutocompleteUnstyled";
+import { styled } from "@mui/material/styles";
+import { autocompleteClasses } from "@mui/material/Autocomplete";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import debounce from "lodash.debounce";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import artistList from "store/artistList";
 import artist from "store/artist";
 import similarArtists from "store/similarArtists";
 import drag from "store/drag";
+import styles from "./SearchBar.module.scss";
 
-function SearchBar(): JSX.Element {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [options, setOptions] = React.useState<readonly SpotifyApi.ArtistObjectFull[]>([]);
+const StyledRoot = styled("div")(
+  () => `
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 0;
+  box-sizing: border-box;
+  width: 500px;
+  max-width: 70vw;
+  background-color: rgba(0, 0, 0, 0);
+  color: whitesmoke;
+  border: 1px solid whitesmoke;
+  border-radius: 2rem;
 
-  React.useEffect(() => {
-    if (!isOpen) {
-      setOptions([]);
-    }
-  }, [isOpen]);
-
-  async function inputHandler(event: any, inputValue: string): Promise<void> {
-    if (!inputValue) {
-      setOptions([]);
-    } else {
-      setIsLoading(true);
-      await artistList.fetchArtists(inputValue);
-      setOptions(artistList.options);
-      setIsLoading(false);
-    }
+  :focus-within {
+    box-shadow: 0 0 10px #9ecaed;
   }
 
-  const debounceInput = debounce(inputHandler, 700);
+`
+);
 
-  function onChangeHandler(event: any, newValue: any): void {
-    if (newValue === null) {
+const StyledInput = styled("input")(
+  () => `
+  width: 100%;
+  height: 3.5rem;
+  padding: 1rem 0 1rem 0rem;
+  outline: 0;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, 0);
+  color: whitesmoke;
+  border: 0;
+
+  ::placeholder{
+    color: whitesmoke;
+    font-size: 1rem;
+  }
+`
+);
+
+const StyledListbox = styled("ul")(
+  ({ theme }) => `
+  position: absolute;
+  width: 450px;
+  max-width: 70vw;
+  margin: 3.5rem 0 0 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  list-style: none;
+  background-color: #FFFFFF;
+  overflow: auto;
+  max-height: 25rem;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 9000;
+
+  & li {
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+  }
+
+  & li.${autocompleteClasses.focused} {
+    background-color: ${theme.palette.mode === "dark" ? "#003b57" : "rgba(0, 0, 0, 0.05)"};
+    cursor: pointer;
+  }
+`
+);
+
+function SearchBar(): JSX.Element {
+  const [inputValue, setInputValue] = React.useState<string>("");
+
+  const debouncedFetch = React.useCallback(
+    debounce((value) => artistList.fetchArtists(value), 500),
+    []
+  );
+
+  async function handleInputChange(event: any) {
+    const { value } = event.target;
+    setInputValue(value);
+    debouncedFetch(value);
+  }
+
+  function clearInput() {
+    setInputValue("");
+    artistList.clear();
+  }
+
+  function handleSubmit(event: any, value: any) {
+    if (value === null) {
       artist.clear();
       if (drag.isActive) {
         similarArtists.fetchSimilarArtists(artist.data[0]?.id);
       }
     } else {
-      artist.update(newValue);
+      artist.update(value);
       similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      setTimeout(() => window.scrollTo(0, 755), 500);
+      setTimeout(() => window.scrollTo(0, 765), 500);
     }
-    setOptions([]);
+    setInputValue("");
+    artistList.clear();
   }
 
+  const { getRootProps, getInputProps, getListboxProps, getOptionProps, groupedOptions } = useAutocomplete({
+    options: artistList.options,
+    getOptionLabel: (option) => option.name,
+    onChange: handleSubmit,
+    autoHighlight: true,
+  });
+
   return (
-    <Autocomplete
-      id="search-box"
-      loading={isLoading}
-      open={isOpen}
-      onOpen={() => {
-        setIsOpen(true);
-      }}
-      onClose={() => {
-        setIsOpen(false);
-      }}
-      options={options}
-      getOptionLabel={(option: SpotifyApi.ArtistObjectFull) => option.name}
-      isOptionEqualToValue={(option, value) => option.name === value.name}
-      onInputChange={debounceInput}
-      onChange={onChangeHandler}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Type an artist name"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {isLoading ? <CircularProgress size={20} sx={{ color: "#F7F7F7" }} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
-          }}
-          variant="outlined"
-          // fullWidth
-          sx={{
-            input: { color: "#F7F7F7", margin: 0.2 },
-            label: { color: "#F7F7F7" },
-          }}
-        />
-      )}
-      renderOption={(props, option, { inputValue }) => {
-        const matches = match(option.name, inputValue);
-        const parts = parse(option.name, matches);
-        return (
-          <li {...props} key={option.id}>
-            <div>
-              {parts.map((part, index) => (
-                <span
-                  style={{
-                    fontWeight: part.highlight ? 700 : 400,
-                  }}
-                  key={index} // eslint-disable-line react/no-array-index-key
-                >
-                  {part.text}
-                </span>
-              ))}
-            </div>
-          </li>
-        );
-      }}
-      autoHighlight
-      blurOnSelect
-      clearOnBlur
-      clearOnEscape
-      noOptionsText="Keep on searching..."
-      sx={{
-        "& .MuiOutlinedInput-notchedOutline": { borderColor: "#F7F7F7" },
-      }}
-    />
+    <StyledRoot {...getRootProps()}>
+      <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+      <StyledInput
+        {...getInputProps()}
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Type an artist name"
+      />
+      {groupedOptions.length > 0 ? (
+        <StyledListbox {...getListboxProps()}>
+          {groupedOptions.map((option: any, index: number) => {
+            const matches = match(option.name, inputValue);
+            const parts = parse(option.name, matches);
+            return (
+              <li {...getOptionProps({ option, index })} key={option.id}>
+                <div>
+                  {parts.map((part, idx) => (
+                    <span
+                      style={{
+                        fontWeight: part.highlight ? 700 : 400,
+                      }}
+                      key={idx} // eslint-disable-line react/no-array-index-key
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            );
+          })}
+        </StyledListbox>
+      ) : null}
+      {inputValue.length > 0 ? (
+        <FontAwesomeIcon icon={faXmark} className={styles.crossIcon} onClick={clearInput} />
+      ) : null}
+    </StyledRoot>
   );
 }
 
