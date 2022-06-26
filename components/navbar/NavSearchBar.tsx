@@ -86,7 +86,7 @@ function NavSearchBar(): JSX.Element {
   const [inputValue, setInputValue] = React.useState<string>("");
 
   function toggleVisibility(): void {
-    if (window.scrollY > 750) {
+    if (window.scrollY > 350) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
