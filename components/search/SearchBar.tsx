@@ -2,6 +2,7 @@ import React from "react";
 import { useAutocomplete } from "@mui/base/AutocompleteUnstyled";
 import { styled } from "@mui/material/styles";
 import { autocompleteClasses } from "@mui/material/Autocomplete";
+import { CircularProgress } from "@mui/material";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import debounce from "lodash.debounce";
@@ -88,7 +89,9 @@ function SearchBar(): JSX.Element {
   const [inputValue, setInputValue] = React.useState<string>("");
 
   const debouncedFetch = React.useCallback(
-    debounce((value) => artistList.fetchArtists(value), 500),
+    debounce((value) => {
+      artistList.fetchArtists(value);
+    }, 500),
     []
   );
 
@@ -159,7 +162,12 @@ function SearchBar(): JSX.Element {
           })}
         </StyledListbox>
       ) : null}
-      {inputValue.length > 0 ? (
+      {artistList.isLoading && (
+        <div>
+          <CircularProgress size={25} sx={{ color: "white", marginTop: 2, marginRight: 2 }} />
+        </div>
+      )}
+      {inputValue.length > 0 && !artistList.isLoading ? (
         <FontAwesomeIcon icon={faXmark} className={styles.crossIcon} onClick={clearInput} />
       ) : null}
     </StyledRoot>
