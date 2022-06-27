@@ -106,7 +106,7 @@ function SearchBar(): JSX.Element {
     artistList.clear();
   }
 
-  function handleSubmit(event: any, value: any) {
+  async function handleSubmit(event: any, value: any) {
     if (value === null) {
       artist.clear();
       if (drag.isActive) {
@@ -114,7 +114,7 @@ function SearchBar(): JSX.Element {
       }
     } else {
       artist.update(value);
-      similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+      await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
       setTimeout(() => window.scrollTo(0, 765), 500);
     }
     setInputValue("");

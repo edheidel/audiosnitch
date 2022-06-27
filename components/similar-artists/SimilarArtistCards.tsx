@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton } from "@mui/material";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, Skeleton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import similarArtists from "store/similarArtists";
@@ -12,31 +12,41 @@ function SimilarArtistCards() {
         <ListItem
           key={similarArtist.id}
           secondaryAction={
-            <div>
-              <IconButton
-                aria-label="play on spotify"
-                href={`https://open.spotify.com/artist/${similarArtist.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon icon={faSpotify} />
-              </IconButton>
+            similarArtists.isLoading ? null : (
+              <div>
+                <IconButton
+                  aria-label="play on spotify"
+                  href={`https://open.spotify.com/artist/${similarArtist.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FontAwesomeIcon icon={faSpotify} />
+                </IconButton>
 
-              <IconButton
-                aria-label="play on youtube"
-                href={`https://www.youtube.com/results?search_query=${similarArtist.name}%2C+music`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon icon={faYoutube} />
-              </IconButton>
-            </div>
+                <IconButton
+                  aria-label="play on youtube"
+                  href={`https://www.youtube.com/results?search_query=${similarArtist.name}%2C+music`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FontAwesomeIcon icon={faYoutube} />
+                </IconButton>
+              </div>
+            )
           }
         >
           <ListItemAvatar>
-            <Avatar alt="band photo small" src={similarArtist.images[2]?.url} />
+            {similarArtists.isLoading ? (
+              <Skeleton variant="circular" width={40} height={40} />
+            ) : (
+              <Avatar alt="band photo small" src={similarArtist.images[2]?.url} />
+            )}
           </ListItemAvatar>
-          <ListItemText primary={similarArtist.name} />
+          {similarArtists.isLoading ? (
+            <Skeleton width="40vw" height="1.5rem" style={{ marginTop: "0.5rem" }} />
+          ) : (
+            <ListItemText primary={similarArtist.name} />
+          )}
         </ListItem>
       ))}
     </List>

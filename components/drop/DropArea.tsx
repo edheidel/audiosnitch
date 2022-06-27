@@ -23,7 +23,7 @@ async function dropHandler(event: any): Promise<void> {
   similarArtists.clear();
   artist.saveId(spotifyArtistId);
   await artist.fetchArtistById(artist.id);
-  similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+  await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
   drag.enableDrop(false);
   setTimeout(() => window.scrollTo(0, 755), 500);
 }
