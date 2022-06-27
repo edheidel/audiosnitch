@@ -127,7 +127,6 @@ function SearchBar(): JSX.Element {
     getOptionLabel: (option) => option.name,
     onChange: handleSubmit,
     autoHighlight: true,
-    clearOnBlur: true,
   });
 
   return (
@@ -139,7 +138,7 @@ function SearchBar(): JSX.Element {
         value={inputValue}
         onChange={handleInputChange}
         placeholder="Type an artist name"
-        id="input"
+        id="searchBarInput"
       />
       {groupedOptions.length > 0 ? (
         <StyledListbox {...getListboxProps()}>
