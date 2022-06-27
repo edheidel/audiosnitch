@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 class SimilarArtistsStore {
   data: SpotifyApi.ArtistsRelatedArtistsResponse[] = [];
 
-  isLoading: boolean = false;
+  isLoading: boolean = true;
 
   constructor() {
     makeAutoObservable(this);

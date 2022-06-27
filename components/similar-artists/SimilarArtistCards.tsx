@@ -1,12 +1,16 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, Skeleton } from "@mui/material";
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import similarArtists from "store/similarArtists";
+import artist from "store/artist";
+import SimilarArtistSkeleton from "./SimilarArtistSkeleton";
 
 function SimilarArtistCards() {
-  return (
+  return similarArtists.isLoading || artist.isLoading ? (
+    <SimilarArtistSkeleton />
+  ) : (
     <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
       {similarArtists.data[0]?.artists.slice(0, 15).map((similarArtist) => (
         <ListItem
@@ -36,17 +40,9 @@ function SimilarArtistCards() {
           }
         >
           <ListItemAvatar>
-            {similarArtists.isLoading ? (
-              <Skeleton variant="circular" width={40} height={40} />
-            ) : (
-              <Avatar alt="band photo small" src={similarArtist.images[2]?.url} />
-            )}
+            <Avatar alt="band photo small" src={similarArtist.images[2]?.url} />
           </ListItemAvatar>
-          {similarArtists.isLoading ? (
-            <Skeleton width="40vw" height="1.5rem" style={{ marginTop: "0.5rem" }} />
-          ) : (
-            <ListItemText primary={similarArtist.name} />
-          )}
+          <ListItemText primary={similarArtist.name} />
         </ListItem>
       ))}
     </List>

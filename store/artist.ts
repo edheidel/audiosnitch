@@ -5,6 +5,8 @@ class ArtistStore {
 
   data: SpotifyApi.ArtistObjectFull[] = [];
 
+  isLoading: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -14,12 +16,14 @@ class ArtistStore {
   }
 
   async fetchArtistById(artistId: string): Promise<void> {
+    this.isLoading = true;
     await fetch(`/api/artist/${artistId}`)
       .then((response) => response.json())
       .then((json: SpotifyApi.ArtistObjectFull) => {
         this.data = [json];
       })
       .catch((err) => console.log("Artist API call:", err)); // eslint-disable-line no-console
+    this.isLoading = false;
   }
 
   clear() {

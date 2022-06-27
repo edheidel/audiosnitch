@@ -12,6 +12,7 @@ import similarArtists from "store/similarArtists";
 import drag from "store/drag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { CircularProgress } from "@mui/material";
 import styles from "./NavSearchBar.module.scss";
 
 const StyledRoot = styled("div")(
@@ -170,7 +171,12 @@ function NavSearchBar(): JSX.Element {
             })}
           </StyledListbox>
         ) : null}
-        {inputValue.length > 0 ? (
+        {artistList.isLoading && (
+          <div>
+            <CircularProgress size={16} sx={{ color: "rgba(0, 0, 0, 0.4)", marginTop: 1.5, marginRight: 2 }} />
+          </div>
+        )}
+        {inputValue.length > 0 && !artistList.isLoading ? (
           <FontAwesomeIcon icon={faXmark} className={styles.crossIcon} onClick={clearInput} />
         ) : null}
       </StyledRoot>
