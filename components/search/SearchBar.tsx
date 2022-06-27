@@ -117,6 +117,7 @@ function SearchBar(): JSX.Element {
       await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
       setTimeout(() => window.scrollTo(0, 765), 500);
     }
+    document.getElementById("searchBarInput")?.blur();
     setInputValue("");
     artistList.clear();
   }
@@ -126,6 +127,7 @@ function SearchBar(): JSX.Element {
     getOptionLabel: (option) => option.name,
     onChange: handleSubmit,
     autoHighlight: true,
+    clearOnBlur: true,
   });
 
   return (
@@ -137,6 +139,7 @@ function SearchBar(): JSX.Element {
         value={inputValue}
         onChange={handleInputChange}
         placeholder="Type an artist name"
+        id="input"
       />
       {groupedOptions.length > 0 ? (
         <StyledListbox {...getListboxProps()}>

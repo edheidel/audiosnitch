@@ -43,9 +43,10 @@ const StyledInput = styled("input")(
   color: rgba(0, 0, 0, 0.8);  
   border: 0;
   outline: 0;
+  font-size: 1rem;
 
   ::placeholder{
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: rgba(0, 0, 0, 0.4);
   }
 `
@@ -125,6 +126,7 @@ function NavSearchBar(): JSX.Element {
       similarArtists.fetchSimilarArtists(artist.data[0]?.id);
       setTimeout(() => window.scrollTo(0, 765), 500);
     }
+    document.getElementById("navSearchBarInput")?.blur();
     setInputValue("");
     artistList.clear();
   }
@@ -146,6 +148,7 @@ function NavSearchBar(): JSX.Element {
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Search for other artists"
+          id="navSearchBarInput"
         />
         {inputValue.length > 0 && groupedOptions.length > 0 ? (
           <StyledListbox {...getListboxProps()}>
