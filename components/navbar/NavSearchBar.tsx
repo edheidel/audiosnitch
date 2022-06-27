@@ -13,6 +13,8 @@ import drag from "store/drag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress } from "@mui/material";
+import scrollToRef from "utils/scrollToRef";
+import refs from "store/refs";
 import styles from "./NavSearchBar.module.scss";
 
 const StyledRoot = styled("div")(
@@ -124,7 +126,7 @@ function NavSearchBar(): JSX.Element {
     } else {
       artist.update(value);
       similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      setTimeout(() => window.scrollTo(0, 765), 500);
+      setTimeout(() => scrollToRef(refs.chipsRef, -75), 500);
     }
     document.getElementById("navSearchBarInput")?.blur();
     setInputValue("");

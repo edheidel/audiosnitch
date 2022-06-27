@@ -32,7 +32,7 @@ function ScrollToTopButton(): JSX.Element {
   return (
     <div className={styles.button}>
       <Fab onClick={scrollToTop} className={isVisible ? styles.button_visible : styles.button_invisible}>
-        <FontAwesomeIcon icon={faArrowUp} />
+        <FontAwesomeIcon icon={faArrowUp} style={{ fontSize: "1.3rem" }} />
       </Fab>
     </div>
   );

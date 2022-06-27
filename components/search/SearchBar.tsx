@@ -13,6 +13,8 @@ import artistList from "store/artistList";
 import artist from "store/artist";
 import similarArtists from "store/similarArtists";
 import drag from "store/drag";
+import scrollToRef from "utils/scrollToRef";
+import refs from "store/refs";
 import styles from "./SearchBar.module.scss";
 
 const StyledRoot = styled("div")(
@@ -115,7 +117,7 @@ function SearchBar(): JSX.Element {
     } else {
       artist.update(value);
       await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      setTimeout(() => window.scrollTo(0, 765), 500);
+      setTimeout(() => scrollToRef(refs.chipsRef, -75), 500);
     }
     document.getElementById("searchBarInput")?.blur();
     setInputValue("");

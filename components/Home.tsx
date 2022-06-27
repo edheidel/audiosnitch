@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
+import refs from "store/refs";
 import useIsMobile from "../utils/hooks/useIsMobile";
 import DropArea from "./drop/DropArea";
 import SearchContainer from "./search/SearchContainer";
@@ -16,6 +17,11 @@ import styles from "./Home.module.scss";
 
 function Home(): JSX.Element {
   const isMobile = useIsMobile();
+  const chipsRef = React.useRef<HTMLInputElement | null>(null);
+
+  React.useEffect(() => {
+    refs.saveChipsRef(chipsRef);
+  }, []);
 
   return (
     <>
@@ -25,7 +31,7 @@ function Home(): JSX.Element {
           <SearchBar />
         </SearchContainer>
         {!isMobile && <DropArea />} {/* Renders drag and drop component for the desktop version */}
-        <div className={styles.results}>
+        <div className={styles.results} ref={chipsRef}>
           <ChipContainer>
             <ChipContainerTitle />
             <GenreChips />
