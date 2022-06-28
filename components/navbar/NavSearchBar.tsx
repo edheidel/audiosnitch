@@ -117,7 +117,7 @@ function NavSearchBar(): JSX.Element {
     artistList.clear();
   }
 
-  function handleSubmit(event: any, value: any) {
+  async function handleSubmit(event: any, value: any) {
     if (value === null) {
       artist.clear();
       if (drag.isActive) {
@@ -125,7 +125,7 @@ function NavSearchBar(): JSX.Element {
       }
     } else {
       artist.update(value);
-      similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+      await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
       setTimeout(() => scrollToRef(refs.chipsRef, -75), 500);
     }
     document.getElementById("navSearchBarInput")?.blur();
