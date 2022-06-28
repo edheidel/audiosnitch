@@ -1,10 +1,10 @@
 import { makeAutoObservable } from "mobx";
 
 class RefStore {
-  chipsRef = null;
+  chipContainerRef: HTMLDivElement | null = null;
 
-  saveChipsRef(ref: any) {
-    this.chipsRef = ref;
+  saveRef(ref: HTMLDivElement | null) {
+    this.chipContainerRef = ref;
   }
 
   constructor() {

@@ -17,10 +17,10 @@ import styles from "./Home.module.scss";
 
 function Home(): JSX.Element {
   const isMobile = useIsMobile();
-  const chipsRef = React.useRef<HTMLInputElement | null>(null);
+  const chipContainerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    refs.saveChipsRef(chipsRef);
+    refs.saveRef(chipContainerRef.current);
   }, []);
 
   return (
@@ -31,7 +31,7 @@ function Home(): JSX.Element {
           <SearchBar />
         </SearchContainer>
         {!isMobile && <DropArea />} {/* Renders drag and drop component for the desktop version */}
-        <div className={styles.results} ref={chipsRef}>
+        <div className={styles.results} ref={chipContainerRef}>
           <ChipContainer>
             <ChipContainerTitle />
             <GenreChips />

@@ -1,6 +1,6 @@
 export default function scrollToRef(ref: any, offset?: number) {
   window.scrollTo({
-    top: ref.current.offsetTop + offset,
+    top: ref.offsetTop + offset,
     behavior: "smooth",
   });
 }

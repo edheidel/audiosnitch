@@ -13,8 +13,8 @@ import drag from "store/drag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress } from "@mui/material";
-import scrollToRef from "utils/scrollToRef";
 import refs from "store/refs";
+import scrollToChipContainer from "utils/scrollToChipContainer";
 import styles from "./NavSearchBar.module.scss";
 
 const StyledRoot = styled("div")(
@@ -90,7 +90,7 @@ function NavSearchBar(): JSX.Element {
   const [inputValue, setInputValue] = React.useState<string>("");
 
   function toggleVisibility(): void {
-    if (window.scrollY > 350) {
+    if (window.scrollY > refs.chipContainerRef!.offsetTop - 70) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
@@ -126,7 +126,7 @@ function NavSearchBar(): JSX.Element {
     } else {
       artist.update(value);
       await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      setTimeout(() => scrollToRef(refs.chipsRef, -75), 500);
+      scrollToChipContainer();
     }
     document.getElementById("navSearchBarInput")?.blur();
     setInputValue("");

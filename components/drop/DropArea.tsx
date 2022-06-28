@@ -5,8 +5,7 @@ import { observer } from "mobx-react-lite";
 import drag from "store/drag";
 import artist from "store/artist";
 import similarArtists from "store/similarArtists";
-import scrollToRef from "utils/scrollToRef";
-import refs from "store/refs";
+import scrollToChipContainer from "utils/scrollToChipContainer";
 import styles from "./DropArea.module.scss";
 
 function dragStartHandler(event: any): void {
@@ -27,7 +26,7 @@ async function dropHandler(event: any): Promise<void> {
   await artist.fetchArtistById(artist.id);
   await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
   drag.enableDrop(false);
-  setTimeout(() => scrollToRef(refs.chipsRef, -75), 500);
+  scrollToChipContainer();
 }
 
 function DropArea(): JSX.Element {
