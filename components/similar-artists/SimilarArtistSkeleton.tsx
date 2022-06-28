@@ -6,10 +6,11 @@ import similarArtists from "store/similarArtists";
 function SkeletonElement() {
   return (
     <Stack direction="row" spacing="0.5rem" sx={{ marginTop: "0.2rem", marginLeft: "1rem", marginBottom: "0.5rem" }}>
-      <Skeleton variant="circular" width="2.5rem" sx={{ minWidth: "2.5rem", minHeight: "2.5rem" }} />
+      <Skeleton variant="circular" width="2.5rem" animation="wave" sx={{ minWidth: "2.5rem", minHeight: "2.5rem" }} />
       <Skeleton
         width="390px"
         height="1.5rem"
+        animation="wave"
         style={{ maxWidth: "90%", marginTop: "0.5rem", marginLeft: "1rem", marginRight: "2rem" }}
       />
     </Stack>
