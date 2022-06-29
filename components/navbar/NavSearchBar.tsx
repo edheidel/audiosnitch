@@ -149,6 +149,9 @@ function NavSearchBar(): JSX.Element {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
+          onFocus={(e) => {
+            e.target.focus({ preventScroll: true });
+          }}
           placeholder="Search for other artists"
           id="navSearchBarInput"
         />
