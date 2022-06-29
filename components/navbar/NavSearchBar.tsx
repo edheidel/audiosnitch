@@ -142,7 +142,12 @@ function NavSearchBar(): JSX.Element {
 
   return (
     <div className={isVisible ? styles.nav_visible : styles.nav_invisible}>
-      <StyledRoot {...getRootProps()}>
+      <StyledRoot
+        {...getRootProps()}
+        onFocus={(e) => {
+          e.target.focus({ preventScroll: true });
+        }}
+      >
         <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
         <StyledInput
           {...getInputProps()}
