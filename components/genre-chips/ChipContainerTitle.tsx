@@ -11,7 +11,7 @@ function ChipContainerTitle(): JSX.Element | null {
     return <div className={styles.title}>{`${adjustName(artist.data[0].name)} style is`}</div>;
   }
   if (artist.data[0].genres.length === 0) {
-    return <div className={styles.title}>Too underground 🥲</div>;
+    return <div className={styles.title}>{artist.data[0].name} is too underground 🥲</div>;
   }
   return null;
 }
