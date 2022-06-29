@@ -2,13 +2,14 @@ import React from "react";
 import { Fab } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import refs from "store/refs";
 import styles from "./ScrollToTopButton.module.scss";
 
 function ScrollToTopButton(): JSX.Element {
   const [isVisible, setIsVisible] = React.useState(false);
 
   function toggleVisibility(): void {
-    if (window.scrollY > 700) {
+    if (window.scrollY > refs.chipContainerRef!.offsetTop - 70) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
