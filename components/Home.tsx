@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
+import artist from "store/artist";
 import useIsMobile from "../utils/hooks/useIsMobile";
 import DropArea from "./drop/DropArea";
 import SearchContainer from "./search/SearchContainer";
@@ -15,25 +16,28 @@ import styles from "./Home.module.scss";
 
 function Home(): JSX.Element {
   const isMobile: boolean = useIsMobile();
-  const resultsRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
+  const ref: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement | null>(null);
 
   return (
     <>
       <div className={styles.container} id="container">
         <SearchContainer>
-          <SearchBar resultsDiv={resultsRef.current} />
+          <SearchBar breakRef={ref.current} />
         </SearchContainer>
-        {!isMobile && <DropArea resultsDiv={resultsRef.current} />}
-        <div className={styles.results} id="search-results" ref={resultsRef}>
-          <ChipContainer>
-            <ChipContainerTitle />
-            <GenreChips />
-          </ChipContainer>
-          <SimilarArtistsContainer>
-            <SimilarArtistsTitle />
-            <SimilarArtistCards />
-          </SimilarArtistsContainer>
-        </div>
+        {!isMobile && <DropArea breakRef={ref.current} />}
+        <div id="scroll-breakpoint" ref={ref} />
+        {artist.isLoaded && (
+          <div className={styles.results} id="search-results">
+            <ChipContainer>
+              <ChipContainerTitle />
+              <GenreChips />
+            </ChipContainer>
+            <SimilarArtistsContainer>
+              <SimilarArtistsTitle />
+              <SimilarArtistCards breakRef={ref.current} />
+            </SimilarArtistsContainer>
+          </div>
+        )}
       </div>
       <ScrollToTopButton />
     </>

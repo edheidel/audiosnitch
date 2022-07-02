@@ -7,23 +7,14 @@ class ArtistStore {
 
   isLoading: boolean = false;
 
+  isLoaded: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
 
   saveId(artistId: string) {
     this.id = artistId;
-  }
-
-  async fetchArtistById(artistId: string): Promise<void> {
-    this.isLoading = true;
-    await fetch(`/api/artist/${artistId}`)
-      .then((response) => response.json())
-      .then((json: SpotifyApi.ArtistObjectFull) => {
-        this.data = [json];
-      })
-      .catch((err) => console.log("Artist API call:", err)); // eslint-disable-line no-console
-    this.isLoading = false;
   }
 
   clear() {
@@ -33,6 +24,19 @@ class ArtistStore {
   update(artist: SpotifyApi.ArtistObjectFull) {
     this.clear();
     this.data.push(artist);
+    this.isLoaded = true;
+  }
+
+  async fetchArtistById(artistId: string): Promise<void> {
+    this.isLoading = true;
+    await fetch(`/api/artist/${artistId}`)
+      .then((response) => response.json())
+      .then((json: SpotifyApi.ArtistObjectFull) => {
+        this.update(json);
+      })
+      .catch((err) => console.log("Artist API call:", err)); // eslint-disable-line no-console
+    this.isLoading = false;
+    this.isLoaded = true;
   }
 }
 

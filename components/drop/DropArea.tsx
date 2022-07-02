@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import drag from "store/drag";
 import artist from "store/artist";
 import similarArtists from "store/similarArtists";
-import { IResultsDiv } from "types";
 import scrollToRef from "utils/scrollToRef";
 import styles from "./DropArea.module.scss";
 
@@ -19,16 +18,14 @@ function dragLeaveHandler(event: any): void {
   drag.enableDrop(false);
 }
 
-function DropArea({ resultsDiv }: IResultsDiv): JSX.Element {
+function DropArea({ breakRef }: { breakRef: HTMLDivElement | null }): JSX.Element {
   async function dropHandler(event: any): Promise<void> {
     const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
     event.preventDefault();
-    similarArtists.clear();
-    artist.saveId(spotifyArtistId);
-    await artist.fetchArtistById(artist.id);
+    await artist.fetchArtistById(spotifyArtistId);
     await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
     drag.enableDrop(false);
-    scrollToRef(resultsDiv, -50);
+    scrollToRef(breakRef, -50);
   }
 
   return drag.isActive ? (

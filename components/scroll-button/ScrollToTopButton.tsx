@@ -2,6 +2,7 @@ import React from "react";
 import { Fab } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import scrollToTop from "utils/scrollToTop";
 import styles from "./ScrollToTopButton.module.scss";
 
 function ScrollToTopButton(): JSX.Element {
@@ -18,13 +19,6 @@ function ScrollToTopButton(): JSX.Element {
   React.useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
   }, []);
-
-  function scrollToTop() {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
 
   return (
     <div className={styles.button}>

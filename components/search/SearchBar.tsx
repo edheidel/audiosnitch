@@ -14,8 +14,6 @@ import artist from "store/artist";
 import similarArtists from "store/similarArtists";
 import drag from "store/drag";
 import scrollToRef from "utils/scrollToRef";
-import { IResultsDiv } from "types";
-import useIsMobile from "utils/hooks/useIsMobile";
 import styles from "./SearchBar.module.scss";
 
 const StyledRoot = styled("div")(
@@ -155,8 +153,7 @@ const StyledListboxWrapped = styled("ul")(
 `
 );
 
-function SearchBar({ resultsDiv }: IResultsDiv): JSX.Element {
-  const isMobile: boolean = useIsMobile();
+function SearchBar({ breakRef }: { breakRef: HTMLDivElement | null }): JSX.Element {
   const [inputValue, setInputValue] = React.useState<string>("");
 
   const debouncedFetch = React.useCallback(
@@ -185,8 +182,10 @@ function SearchBar({ resultsDiv }: IResultsDiv): JSX.Element {
       }
     } else {
       artist.update(value);
-      await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-      isMobile ? scrollToRef(resultsDiv, -300) : scrollToRef(resultsDiv, -60); // eslint-disable-line no-unused-expressions
+      await similarArtists.fetchSimilarArtists(artist.data[0].id);
+      if (!similarArtists.isLoading) {
+        scrollToRef(breakRef, -50);
+      }
     }
     document.getElementById("searchBarInput")?.blur();
     setInputValue("");

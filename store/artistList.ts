@@ -5,6 +5,8 @@ class ArtistList {
 
   isLoading: boolean = false;
 
+  isLoaded: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -18,6 +20,7 @@ class ArtistList {
       })
       .catch((err) => console.log("Search API call:", err)); // eslint-disable-line no-console
     this.isLoading = false;
+    this.isLoaded = true;
   }
 
   clear() {
