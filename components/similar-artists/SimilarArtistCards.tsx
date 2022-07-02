@@ -7,7 +7,11 @@ import similarArtists from "store/similarArtists";
 import artist from "store/artist";
 import SimilarArtistSkeleton from "./SimilarArtistSkeleton";
 
-function SimilarArtistCards() {
+function parseName(name: string): string {
+  return name.replace(/&/gi, "");
+}
+
+function SimilarArtistCards(): JSX.Element {
   return similarArtists.isLoading || artist.isLoading ? (
     <SimilarArtistSkeleton />
   ) : (
@@ -29,7 +33,7 @@ function SimilarArtistCards() {
 
                 <IconButton
                   aria-label="play on youtube"
-                  href={`https://www.youtube.com/results?search_query=${similarArtist.name}%2C+music`}
+                  href={`https://www.youtube.com/results?search_query=${parseName(similarArtist.name)}%2C+music`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
