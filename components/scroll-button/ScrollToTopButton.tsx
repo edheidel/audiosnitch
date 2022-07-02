@@ -8,12 +8,16 @@ function ScrollToTopButton(): JSX.Element {
   const [isVisible, setIsVisible] = React.useState(false);
 
   function toggleVisibility(): void {
-    if (window.scrollY > 700) {
+    if (window.scrollY > 100) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
     }
   }
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+  }, []);
 
   function scrollToTop() {
     window.scroll({
@@ -21,13 +25,6 @@ function ScrollToTopButton(): JSX.Element {
       behavior: "smooth",
     });
   }
-
-  React.useEffect(() => {
-    window.addEventListener("scroll", toggleVisibility);
-    return () => {
-      window.removeEventListener("scroll", toggleVisibility);
-    };
-  }, []);
 
   return (
     <div className={styles.button}>

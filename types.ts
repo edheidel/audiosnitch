@@ -33,3 +33,7 @@ export interface IArtist {
   type: string;
   uri: string;
 }
+
+export interface IResultsDiv {
+  resultsDiv: HTMLDivElement | null;
+}

@@ -5,6 +5,8 @@ class SimilarArtistsStore {
 
   isLoading: boolean = true;
 
+  isLoaded: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -18,6 +20,7 @@ class SimilarArtistsStore {
       })
       .catch((err) => console.log("Related Artists API call:", err)); // eslint-disable-line no-console
     this.isLoading = false;
+    this.isLoaded = true;
   }
 
   clear() {

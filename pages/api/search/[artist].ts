@@ -60,7 +60,7 @@ async function fetchToken(): Promise<string> {
   return token.value;
 }
 
-async function fetchArtists(artist: string | string[]): Promise<{}> {
+async function fetchArtists(artist: string | string[] | undefined): Promise<{}> {
   const artists: SpotifyApi.ArtistSearchResponse = await axios
     .get<Promise<SpotifyApi.ArtistSearchResponse>>(
       `${SPOTIFY_SEARCH_ENDPOINT}?q=artist:${artist}&type=artist&market=ES&limit=10`,

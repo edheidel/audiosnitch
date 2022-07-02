@@ -42,7 +42,7 @@ function SimilarArtistCards() {
           <ListItemAvatar>
             <Avatar alt="band photo small" src={similarArtist.images[2]?.url} />
           </ListItemAvatar>
-          <ListItemText primary={similarArtist.name} />
+          <ListItemText primary={similarArtist.name} sx={{ maxWidth: "65%" }} />
         </ListItem>
       ))}
     </List>

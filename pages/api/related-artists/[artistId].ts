@@ -60,7 +60,7 @@ async function fetchToken(): Promise<string> {
   return token.value;
 }
 
-async function fetchRelatedArtists(artistId: string | string[]): Promise<{}> {
+async function fetchRelatedArtists(artistId: string | string[] | undefined): Promise<{}> {
   const artist: IArtist = await axios
     .get<Promise<IArtist>>(`${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}/related-artists`, {
       headers: {
