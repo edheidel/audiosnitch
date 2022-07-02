@@ -42,10 +42,11 @@ const StyledRoot = styled("div")(
 const StyledRootWrapped = styled("div")(
   () => `
   display: flex;
+  justify-content: center;
   padding: 0;
   box-sizing: border-box;
   font-size: 1rem;
-  width: 350px;
+  width: 450px;
   max-width: 70vw;
   border: 1px solid whitesmoke;
   border-radius: 2rem;
@@ -126,7 +127,7 @@ const StyledListbox = styled("ul")(
 const StyledListboxWrapped = styled("ul")(
   ({ theme }) => `
   position: absolute;
-  width: 300px;
+  width: 400px;
   max-width: 70vw;
   margin: 2.7rem 0 0;
   padding-top: 0.5rem;
@@ -134,7 +135,7 @@ const StyledListboxWrapped = styled("ul")(
   list-style: none;
   background-color: #FFFFFF;
   overflow: auto;
-  max-height: 20rem;
+  max-height: 25rem;
   border-radius: 3px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   cursor: pointer;
@@ -237,7 +238,7 @@ function SearchBar({ resultsDiv }: IResultsDiv): JSX.Element {
         ) : null}
         {artistList.isLoading && (
           <div>
-            <CircularProgress size={25} sx={{ color: "white", marginTop: 2, marginRight: 2 }} />
+            <CircularProgress size={23} sx={{ color: "gray", marginTop: 1, marginRight: 2 }} />
           </div>
         )}
         {inputValue.length > 0 && !artistList.isLoading ? (

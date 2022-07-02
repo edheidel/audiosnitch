@@ -10,21 +10,20 @@ import GenreChips from "./genre-chips/GenreChips";
 import SimilarArtistsTitle from "./similar-artists/SimilarArtistsTitle";
 import SimilarArtistsContainer from "./similar-artists/SimilarArtistsContainer";
 import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
-import ScrollToTopButton from "./scroll/ScrollToTopButton";
+import ScrollToTopButton from "./scroll-button/ScrollToTopButton";
 import styles from "./Home.module.scss";
 
 function Home(): JSX.Element {
   const isMobile: boolean = useIsMobile();
   const resultsRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
-  const resultsDiv: HTMLDivElement | null = resultsRef.current;
 
   return (
     <>
       <div className={styles.container} id="container">
         <SearchContainer>
-          <SearchBar resultsDiv={resultsDiv} />
+          <SearchBar resultsDiv={resultsRef.current} />
         </SearchContainer>
-        {!isMobile && <DropArea resultsDiv={resultsDiv} />}
+        {!isMobile && <DropArea resultsDiv={resultsRef.current} />}
         <div className={styles.results} id="search-results" ref={resultsRef}>
           <ChipContainer>
             <ChipContainerTitle />
@@ -36,7 +35,7 @@ function Home(): JSX.Element {
           </SimilarArtistsContainer>
         </div>
       </div>
-      <ScrollToTopButton resultsDiv={resultsDiv} />
+      <ScrollToTopButton />
     </>
   );
 }
