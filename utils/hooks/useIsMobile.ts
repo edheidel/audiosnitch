@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import React from "react";
 
-// Hook creates a boolean isMobile flag on window width change.
-export default function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(null || Boolean);
+export default function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
 
   const calculateIsMobile = (): void => {
     if (window.innerWidth <= 768) {
@@ -12,7 +11,7 @@ export default function useIsMobile() {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     calculateIsMobile();
     window.addEventListener("resize", calculateIsMobile);
   }, []);

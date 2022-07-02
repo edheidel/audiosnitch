@@ -1,6 +1,5 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import refs from "store/refs";
 import useIsMobile from "../utils/hooks/useIsMobile";
 import DropArea from "./drop/DropArea";
 import SearchContainer from "./search/SearchContainer";
@@ -12,26 +11,21 @@ import SimilarArtistsTitle from "./similar-artists/SimilarArtistsTitle";
 import SimilarArtistsContainer from "./similar-artists/SimilarArtistsContainer";
 import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
 import ScrollToTopButton from "./scroll/ScrollToTopButton";
-import NavSearchBar from "./navbar/NavSearchBar";
 import styles from "./Home.module.scss";
 
 function Home(): JSX.Element {
-  const isMobile = useIsMobile();
-  const chipContainerRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    refs.saveRef(chipContainerRef.current);
-  }, []);
+  const isMobile: boolean = useIsMobile();
+  const resultsRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
+  const resultsDiv: HTMLDivElement | null = resultsRef.current;
 
   return (
     <>
-      <NavSearchBar />
-      <div className={styles.container}>
+      <div className={styles.container} id="container">
         <SearchContainer>
-          <SearchBar />
+          <SearchBar resultsDiv={resultsDiv} />
         </SearchContainer>
-        {!isMobile && <DropArea />} {/* Renders drag and drop component for the desktop version */}
-        <div className={styles.results} ref={chipContainerRef}>
+        {!isMobile && <DropArea resultsDiv={resultsDiv} />}
+        <div className={styles.results} id="search-results" ref={resultsRef}>
           <ChipContainer>
             <ChipContainerTitle />
             <GenreChips />
@@ -42,7 +36,7 @@ function Home(): JSX.Element {
           </SimilarArtistsContainer>
         </div>
       </div>
-      <ScrollToTopButton />
+      <ScrollToTopButton resultsDiv={resultsDiv} />
     </>
   );
 }

@@ -5,7 +5,8 @@ import { observer } from "mobx-react-lite";
 import drag from "store/drag";
 import artist from "store/artist";
 import similarArtists from "store/similarArtists";
-import scrollToChipContainer from "utils/scrollToChipContainer";
+import { IResultsDiv } from "types";
+import scrollToRef from "utils/scrollToRef";
 import styles from "./DropArea.module.scss";
 
 function dragStartHandler(event: any): void {
@@ -18,18 +19,18 @@ function dragLeaveHandler(event: any): void {
   drag.enableDrop(false);
 }
 
-async function dropHandler(event: any): Promise<void> {
-  const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
-  event.preventDefault();
-  similarArtists.clear();
-  artist.saveId(spotifyArtistId);
-  await artist.fetchArtistById(artist.id);
-  await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
-  drag.enableDrop(false);
-  scrollToChipContainer();
-}
+function DropArea({ resultsDiv }: IResultsDiv): JSX.Element {
+  async function dropHandler(event: any): Promise<void> {
+    const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
+    event.preventDefault();
+    similarArtists.clear();
+    artist.saveId(spotifyArtistId);
+    await artist.fetchArtistById(artist.id);
+    await similarArtists.fetchSimilarArtists(artist.data[0]?.id);
+    drag.enableDrop(false);
+    scrollToRef(resultsDiv, -50);
+  }
 
-function DropArea(): JSX.Element {
   return drag.isActive ? (
     <div
       className={styles.dropArea_active}

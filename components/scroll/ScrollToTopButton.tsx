@@ -2,25 +2,18 @@ import React from "react";
 import { Fab } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import refs from "store/refs";
+import { IResultsDiv } from "types";
 import styles from "./ScrollToTopButton.module.scss";
 
-function ScrollToTopButton(): JSX.Element {
+function ScrollToTopButton({ resultsDiv }: IResultsDiv): JSX.Element {
   const [isVisible, setIsVisible] = React.useState(false);
 
   function toggleVisibility(): void {
-    if (window.scrollY > refs.chipContainerRef!.offsetTop - 70) {
+    if (resultsDiv && window.scrollY > resultsDiv.offsetTop + 0) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
     }
-  }
-
-  function scrollToTop() {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
   }
 
   React.useEffect(() => {
@@ -29,6 +22,13 @@ function ScrollToTopButton(): JSX.Element {
       window.removeEventListener("scroll", toggleVisibility);
     };
   }, []);
+
+  function scrollToTop() {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <div className={styles.button}>
