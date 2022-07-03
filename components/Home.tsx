@@ -22,7 +22,7 @@ function Home(): JSX.Element {
     <>
       <div className={styles.container} id="container">
         <SearchContainer>
-          <SearchBar breakRef={ref.current} />
+          <SearchBar breakRef={ref.current} isMobile={isMobile} />
         </SearchContainer>
         {!isMobile && <DropArea breakRef={ref.current} />}
         <div id="scroll-breakpoint" ref={ref} />
