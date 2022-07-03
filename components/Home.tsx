@@ -1,8 +1,10 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import artist from "store/artist";
+import { dragLeaveHandler, dragStartHandler } from "utils/dragAndDrop";
+import drag from "store/drag";
 import useIsMobile from "../utils/hooks/useIsMobile";
-import DropArea from "./drop/DropArea";
+import DropOverlay from "./drag-and-drop/DropOverlay";
 import SearchContainer from "./search/SearchContainer";
 import SearchBar from "./search/SearchBar";
 import ChipContainer from "./genre-chips/ChipContainer";
@@ -14,23 +16,31 @@ import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
 import ScrollToTopButton from "./scroll-button/ScrollToTopButton";
 import styles from "./Home.module.scss";
 import Photo from "./about-artist/Photo";
+import DragArea from "./drag-and-drop/DragArea";
 
 function Home(): JSX.Element {
   const isMobile: boolean = useIsMobile();
   const ref: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className={styles.container} id="container">
+    <div
+      id="container"
+      className={styles.container}
+      onDragStart={(e) => dragStartHandler(e)}
+      onDragLeave={(e) => dragLeaveHandler(e)}
+      onDragOver={(e) => dragStartHandler(e)}
+    >
       <SearchContainer>
         <SearchBar breakRef={ref.current} isMobile={isMobile} />
       </SearchContainer>
 
-      {!isMobile && <DropArea breakRef={ref.current} />}
+      {!isMobile && !artist.isLoaded && <DragArea />}
+      {!isMobile && drag.isActive && <DropOverlay breakRef={ref.current} />}
 
       <div id="scroll-breakpoint" ref={ref} />
 
       {artist.isLoaded && (
-        <div className={styles.results} id="search-results">
+        <div id="results" className={styles.results}>
           <Photo />
           <ChipContainer>
             <ChipContainerTitle />

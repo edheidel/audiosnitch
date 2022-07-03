@@ -1,7 +1,7 @@
 import React from "react";
 import { Fab } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import scrollToTop from "utils/scrollToTop";
 import styles from "./ScrollToTopButton.module.scss";
 
@@ -23,7 +23,7 @@ function ScrollToTopButton(): JSX.Element {
   return (
     <div className={styles.button}>
       <Fab onClick={scrollToTop} className={isVisible ? styles.button_visible : styles.button_invisible}>
-        <FontAwesomeIcon icon={faArrowUp} style={{ fontSize: "1.3rem" }} />
+        <FontAwesomeIcon icon={faChevronUp} style={{ fontSize: "1.6rem" }} />
       </Fab>
     </div>
   );

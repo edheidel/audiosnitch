@@ -21,10 +21,10 @@ const StyledRoot = styled("div")(() => ({
   display: "flex",
   justifyContent: "center",
   alignContent: "center",
-  marginTop: "2rem",
+  marginTop: "1.5rem",
   padding: 0,
   boxSizing: "border-box",
-  width: "450px",
+  width: "500px",
   maxWidth: "70vw",
   backgroundColor: "rgba(0, 0, 0, 0)",
   color: "whitesmoke",
@@ -42,7 +42,7 @@ const StyledRootWrapped = styled("div")(() => ({
   padding: 0,
   boxSizing: "border-box",
   fontSize: "1rem",
-  width: "450px",
+  width: "400px",
   maxWidth: "70vw",
   border: "1px solid whitesmoke",
   borderRadius: "2rem",
@@ -56,7 +56,7 @@ const StyledRootWrapped = styled("div")(() => ({
 const StyledInput = styled("input")(() => ({
   width: "100%",
   height: "3.5rem",
-  padding: "1rem 0 1rem 0rem",
+  padding: "1rem 0 1rem 0.3rem",
   outline: 0,
   fontSize: "1rem",
   backgroundColor: "rgba(0, 0, 0, 0)",
@@ -99,7 +99,7 @@ const StyledListbox = styled("ul")(
   border-radius: 3px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  z-index: 9000;
+  z-index: 6;
 
   & li {
     padding: 0.5rem 1.5rem;
@@ -118,7 +118,7 @@ const StyledListbox = styled("ul")(
 const StyledListboxWrapped = styled("ul")(
   ({ theme }) => `
   position: absolute;
-  width: 400px;
+  width: 360px;
   max-width: 70vw;
   margin: 2.7rem 0 0;
   padding-top: 0.5rem;

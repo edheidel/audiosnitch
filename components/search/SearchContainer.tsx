@@ -7,7 +7,7 @@ function SearchContainer({ children }: { children: React.ReactNode }): JSX.Eleme
   return !artist.isLoaded ? (
     <div className={styles.body}>
       <div className={styles.title}>Which music style is this?</div>
-      <div className={styles.search}>{children}</div>
+      <div>{children}</div>
     </div>
   ) : (
     <div className={styles.bodyWithResults}>

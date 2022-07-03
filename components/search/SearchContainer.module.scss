@@ -1,4 +1,5 @@
 .body {
+  top: 0;
   width: 70vw;
   max-width: 500px;
 }
@@ -14,23 +15,6 @@
   color: whitesmoke;
   font-size: 2.49rem;
   font-weight: bold;
-  margin-bottom: 1.2rem;
-}
-
-.search {
-  display: flex;
-  justify-content: center;
-  animation: fade-in 3s;
-
-  @keyframes fade-in {
-    0% {
-      opacity: 0.1;
-    }
-    20% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
+  margin-top: 8vh;
+  margin-bottom: 5vh;
 }
