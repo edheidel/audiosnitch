@@ -5,8 +5,10 @@
   background-image: linear-gradient(15deg, #7b1fa2, 48%, #03a9f4);
   background-attachment: fixed;
   width: 100vw;
+  height: fit-content;
   min-height: 100vh;
   animation: wave 30s linear infinite;
+  z-index: -1;
 
   @keyframes wave {
     0% {
@@ -33,6 +35,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  top: 0;
+  margin-top: 50px;
+  padding: 0;
   width: 85vw;
   animation: slide 1s ease-out;
 

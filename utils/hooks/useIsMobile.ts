@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMobile, setIsMobile] = React.useState<boolean>(true);
 
   const calculateIsMobile = (): void => {
     if (window.innerWidth <= 768) {

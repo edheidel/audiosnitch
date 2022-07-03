@@ -11,7 +11,7 @@
   max-height: 15vh;
   height: 75px;
   opacity: 1;
-  z-index: 9000;
+  z-index: 5;
   animation: fade-in 0.25s;
 
   @keyframes fade-in {
@@ -28,12 +28,7 @@
 }
 
 .searchIcon {
-  top: 50%;
-  transform: translate(0, 110%);
-  padding: 0 0.5rem 0 1rem;
-  color: whitesmoke;
-  font-size: 1.1rem;
-  padding-right: 0.8rem;
+  padding: 1.2rem 0.8rem 0 1rem;
 }
 
 .searchIconWrapped {
