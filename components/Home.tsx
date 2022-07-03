@@ -13,6 +13,7 @@ import SimilarArtistsContainer from "./similar-artists/SimilarArtistsContainer";
 import SimilarArtistCards from "./similar-artists/SimilarArtistCards";
 import ScrollToTopButton from "./scroll-button/ScrollToTopButton";
 import styles from "./Home.module.scss";
+import Photo from "./about-artist/Photo";
 
 function Home(): JSX.Element {
   const isMobile: boolean = useIsMobile();
@@ -28,6 +29,7 @@ function Home(): JSX.Element {
         <div id="scroll-breakpoint" ref={ref} />
         {artist.isLoaded && (
           <div className={styles.results} id="search-results">
+            <Photo />
             <ChipContainer>
               <ChipContainerTitle />
               <GenreChips />
