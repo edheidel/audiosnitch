@@ -20,29 +20,30 @@ function Home(): JSX.Element {
   const ref: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement | null>(null);
 
   return (
-    <>
-      <div className={styles.container} id="container">
-        <SearchContainer>
-          <SearchBar breakRef={ref.current} isMobile={isMobile} />
-        </SearchContainer>
-        {!isMobile && <DropArea breakRef={ref.current} />}
-        <div id="scroll-breakpoint" ref={ref} />
-        {artist.isLoaded && (
-          <div className={styles.results} id="search-results">
-            <Photo />
-            <ChipContainer>
-              <ChipContainerTitle />
-              <GenreChips />
-            </ChipContainer>
-            <SimilarArtistsContainer>
-              <SimilarArtistsTitle />
-              <SimilarArtistCards breakRef={ref.current} />
-            </SimilarArtistsContainer>
-          </div>
-        )}
-      </div>
-      <ScrollToTopButton />
-    </>
+    <div className={styles.container} id="container">
+      <SearchContainer>
+        <SearchBar breakRef={ref.current} isMobile={isMobile} />
+      </SearchContainer>
+
+      {!isMobile && <DropArea breakRef={ref.current} />}
+
+      <div id="scroll-breakpoint" ref={ref} />
+
+      {artist.isLoaded && (
+        <div className={styles.results} id="search-results">
+          <Photo />
+          <ChipContainer>
+            <ChipContainerTitle />
+            <GenreChips />
+          </ChipContainer>
+          <SimilarArtistsContainer>
+            <SimilarArtistsTitle />
+            <SimilarArtistCards breakRef={ref.current} />
+          </SimilarArtistsContainer>
+          <ScrollToTopButton />
+        </div>
+      )}
+    </div>
   );
 }
 

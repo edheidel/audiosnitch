@@ -17,80 +17,72 @@ import scrollToRef from "utils/scrollToRef";
 import scrollToTop from "utils/scrollToTop";
 import styles from "./SearchBar.module.scss";
 
-const StyledRoot = styled("div")(
-  () => `
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  padding: 0;
-  box-sizing: border-box;
-  width: 500px;
-  max-width: 70vw;
-  background-color: rgba(0, 0, 0, 0);
-  color: whitesmoke;
-  border: 1px solid whitesmoke;
-  border-radius: 2rem;
+const StyledRoot = styled("div")(() => ({
+  display: "flex",
+  justifyContent: "center",
+  alignContent: "center",
+  marginTop: "2rem",
+  padding: 0,
+  boxSizing: "border-box",
+  width: "450px",
+  maxWidth: "70vw",
+  backgroundColor: "rgba(0, 0, 0, 0)",
+  color: "whitesmoke",
+  border: "1px solid whitesmoke",
+  borderRadius: "2rem",
 
-  :focus-within {
-    box-shadow: 0 0 10px #9ecaed;
-  }
+  "&:focus-within": {
+    boxShadow: "0 0 10px #9ecaed",
+  },
+}));
 
-`
-);
+const StyledRootWrapped = styled("div")(() => ({
+  display: "flex",
+  justifyContent: "center",
+  padding: 0,
+  boxSizing: "border-box",
+  fontSize: "1rem",
+  width: "450px",
+  maxWidth: "70vw",
+  border: "1px solid whitesmoke",
+  borderRadius: "2rem",
+  backgroundColor: "#FFFFFF",
 
-const StyledRootWrapped = styled("div")(
-  () => `
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: 1rem;
-  width: 450px;
-  max-width: 70vw;
-  border: 1px solid whitesmoke;
-  border-radius: 2rem;
-  background-color: #FFFFFF;
+  "&:focus-within": {
+    boxShadow: "0 0 5px #9ecaed",
+  },
+}));
 
-  :focus-within {
-    box-shadow: 0 0 5px #9ecaed;
-  }
-`
-);
+const StyledInput = styled("input")(() => ({
+  width: "100%",
+  height: "3.5rem",
+  padding: "1rem 0 1rem 0rem",
+  outline: 0,
+  fontSize: "1rem",
+  backgroundColor: "rgba(0, 0, 0, 0)",
+  color: "whitesmoke",
+  border: 0,
 
-const StyledInput = styled("input")(
-  () => `
-  width: 100%;
-  height: 3.5rem;
-  padding: 1rem 0 1rem 0rem;
-  outline: 0;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0);
-  color: whitesmoke;
-  border: 0;
+  "&::placeholder": {
+    color: "whitesmoke",
+    fontSize: "1rem",
+  },
+}));
 
-  ::placeholder{
-    color: whitesmoke;
-    font-size: 1rem;
-  }
-`
-);
+const StyledInputWrapped = styled("input")(() => ({
+  width: "100%",
+  height: "2.5rem",
+  backgroundColor: "rgba(0, 0, 0, 0)",
+  color: "rgba(0, 0, 0, 0.8)",
+  border: 0,
+  outline: 0,
+  fontSize: "1rem",
 
-const StyledInputWrapped = styled("input")(
-  () => `
-  width: 100%;
-  height: 2.5rem;
-  background-color: rgba(0, 0, 0, 0);
-  color: rgba(0, 0, 0, 0.8);  
-  border: 0;
-  outline: 0;
-  font-size: 1rem;
-
-  ::placeholder{
-    font-size: 0.95rem;
-    color: rgba(0, 0, 0, 0.4);
-  }
-`
-);
+  "&::placeholder": {
+    fontSize: "0.95rem",
+    color: "rgba(0, 0, 0, 0.4)",
+  },
+}));
 
 const StyledListbox = styled("ul")(
   ({ theme }) => `
@@ -204,7 +196,51 @@ function SearchBar({ breakRef, isMobile }: { breakRef: HTMLDivElement | null; is
     autoHighlight: true,
   });
 
-  return similarArtists.isLoaded ? (
+  return !artist.isLoaded ? (
+    <StyledRoot {...getRootProps()}>
+      <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} width="1rem" color="whitesmoke" />
+      <StyledInput
+        {...getInputProps()}
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Type an artist name"
+        id="searchBarInput"
+      />
+      {groupedOptions.length > 0 ? (
+        <StyledListbox {...getListboxProps()}>
+          {groupedOptions.map((option: any, index: number) => {
+            const matches = match(option.name, inputValue);
+            const parts = parse(option.name, matches);
+            return (
+              <li {...getOptionProps({ option, index })} key={option.id}>
+                <div>
+                  {parts.map((part, idx) => (
+                    <span
+                      style={{
+                        fontWeight: part.highlight ? 700 : 400,
+                      }}
+                      key={idx} // eslint-disable-line react/no-array-index-key
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            );
+          })}
+        </StyledListbox>
+      ) : null}
+      {artistList.isLoading && (
+        <div>
+          <CircularProgress size={25} sx={{ color: "white", marginTop: 2, marginRight: 2 }} />
+        </div>
+      )}
+      {inputValue.length > 0 && !artistList.isLoading ? (
+        <FontAwesomeIcon icon={faXmark} className={styles.crossIcon} onClick={clearInput} />
+      ) : null}
+    </StyledRoot>
+  ) : (
     <div className={styles.scrollWrapper}>
       <StyledRootWrapped {...getRootProps()}>
         <FontAwesomeIcon icon={faSearch} className={styles.searchIconWrapped} />
@@ -250,50 +286,6 @@ function SearchBar({ breakRef, isMobile }: { breakRef: HTMLDivElement | null; is
         ) : null}
       </StyledRootWrapped>
     </div>
-  ) : (
-    <StyledRoot {...getRootProps()}>
-      <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
-      <StyledInput
-        {...getInputProps()}
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder="Type an artist name"
-        id="searchBarInput"
-      />
-      {groupedOptions.length > 0 ? (
-        <StyledListbox {...getListboxProps()}>
-          {groupedOptions.map((option: any, index: number) => {
-            const matches = match(option.name, inputValue);
-            const parts = parse(option.name, matches);
-            return (
-              <li {...getOptionProps({ option, index })} key={option.id}>
-                <div>
-                  {parts.map((part, idx) => (
-                    <span
-                      style={{
-                        fontWeight: part.highlight ? 700 : 400,
-                      }}
-                      key={idx} // eslint-disable-line react/no-array-index-key
-                    >
-                      {part.text}
-                    </span>
-                  ))}
-                </div>
-              </li>
-            );
-          })}
-        </StyledListbox>
-      ) : null}
-      {artistList.isLoading && (
-        <div>
-          <CircularProgress size={25} sx={{ color: "white", marginTop: 2, marginRight: 2 }} />
-        </div>
-      )}
-      {inputValue.length > 0 && !artistList.isLoading ? (
-        <FontAwesomeIcon icon={faXmark} className={styles.crossIcon} onClick={clearInput} />
-      ) : null}
-    </StyledRoot>
   );
 }
 

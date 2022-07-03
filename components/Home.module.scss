@@ -2,9 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-image: linear-gradient(15deg, #7b1fa2, 48%, #03a9f4);
   background-attachment: fixed;
   width: 100vw;
+  height: fit-content;
   min-height: 100vh;
   animation: wave 30s linear infinite;
 

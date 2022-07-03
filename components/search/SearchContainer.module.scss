@@ -1,7 +1,6 @@
 .body {
   width: 70vw;
   max-width: 500px;
-  margin-top: min(15vh);
 }
 
 .bodyWithResults {
@@ -19,6 +18,8 @@
 }
 
 .search {
+  display: flex;
+  justify-content: center;
   animation: fade-in 3s;
 
   @keyframes fade-in {
