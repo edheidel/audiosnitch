@@ -2,7 +2,7 @@
 import axios from "axios";
 import Cors from "cors";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { IToken, IAccountResponse, IArtist } from "types/interfaces";
+import type { IToken, IAccountResponse } from "types/interfaces";
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -61,8 +61,8 @@ async function fetchToken(): Promise<string> {
 }
 
 async function fetchRelatedArtists(artistId: string | string[] | undefined): Promise<{}> {
-  const artist: IArtist = await axios
-    .get<Promise<IArtist>>(`${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}/related-artists`, {
+  const artist = await axios
+    .get(`${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}/related-artists`, {
       headers: {
         Authorization: `Bearer ${await fetchToken()}`,
       },
