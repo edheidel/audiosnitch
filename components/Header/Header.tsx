@@ -11,12 +11,11 @@ const Header = observer(() => (
   <div className={styles.container}>
     <Link href="/">
       <IconButton
-        className={styles.homeButton}
         onClick={() => {
           artist.clearArtistData();
         }}
       >
-        <IconWrapper icon={faHome} />
+        <IconWrapper className={styles.homeButton} icon={faHome} />
       </IconButton>
     </Link>
     <div className={styles.search}>
