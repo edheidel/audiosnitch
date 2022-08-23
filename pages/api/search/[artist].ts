@@ -2,7 +2,7 @@
 import axios from "axios";
 import Cors from "cors";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { IToken, IAccountResponse } from "types";
+import type { IToken, IAccountResponse } from "types/interfaces";
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;

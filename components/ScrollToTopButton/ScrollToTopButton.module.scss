@@ -1,0 +1,41 @@
+.container {
+  position: fixed;
+  bottom: 2vh;
+  right: 2vw;
+  z-index: 5;
+}
+
+.buttonVisible {
+  opacity: 1;
+  animation: fade-in 0.25s;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+.buttonInvisible {
+  opacity: 0;
+  cursor: default;
+  animation: fade-out 0.1s;
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    20% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}

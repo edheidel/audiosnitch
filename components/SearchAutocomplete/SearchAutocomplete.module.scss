@@ -1,0 +1,76 @@
+// Search component on the Home page
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 450px;
+  max-width: 80vw;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  color: whitesmoke;
+  border: 1px solid whitesmoke;
+  border-radius: 2rem;
+}
+
+.container:focus-within {
+  box-shadow: 0 0 10px #9ecaed;
+}
+
+.searchIcon {
+  padding: 0 0.8rem 0 1rem;
+  height: 1rem;
+}
+
+.xIcon {
+  margin-right: 0.5rem;
+  color: whitesmoke;
+  font-size: 1.3rem;
+  padding-right: 0.8rem;
+  cursor: pointer;
+}
+
+// Search component in the header
+.wrapperNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  max-width: 60vw;
+}
+
+.containerNav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #ffffff;
+  color: whitesmoke;
+  border: 1px solid whitesmoke;
+  border-radius: 2rem;
+}
+
+.containerNav:focus-within {
+  box-shadow: 0 0 10px #9ecaed;
+}
+
+.searchIconNav {
+  padding: 0 0.8rem 0 1rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.xIconNav {
+  margin-right: 0.5rem;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  padding-right: 0.8rem;
+  cursor: pointer;
+}

@@ -1,11 +1,21 @@
-import drag from "store/drag";
+import { NextRouter } from "next/router";
+import artist from "store/artist";
+import dragDrop from "store/dragDrop";
 
-export function dragStartHandler(event: any): void {
+export function handleDragStart(event: React.DragEvent<HTMLDivElement>) {
   event.preventDefault();
-  drag.enableDrop(true);
+  dragDrop.enableDrop(true);
 }
 
-export function dragLeaveHandler(event: any): void {
+export function handleDragLeave(event: React.DragEvent<HTMLDivElement>) {
   event.preventDefault();
-  drag.enableDrop(false);
+  dragDrop.enableDrop(false);
+}
+
+export async function handleDrop(event: React.DragEvent<HTMLDivElement>, router: NextRouter) {
+  const spotifyArtistId = [...event.dataTransfer.getData("text/uri-list")].slice(-22).join("");
+  event.preventDefault();
+  dragDrop.enableDrop(false);
+  await artist.fetchArtistData(spotifyArtistId);
+  router.push(`/artist/${artist.artistData.name}`);
 }
