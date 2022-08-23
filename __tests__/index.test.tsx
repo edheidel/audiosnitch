@@ -1,22 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Home from "../components/Home";
-import SearchBar from "../components/search/SearchBar";
+import Home from "../pages/index";
+import SearchAutocomplete from "../components/SearchAutocomplete/SearchAutocomplete";
 
-describe("App", () => {
-  it("renders heading text", () => {
+describe("Home page", () => {
+  it("renders the title component", () => {
     render(<Home />);
-    expect(screen.getByText(/which music style is this\?/i)).toHaveTextContent("Which music style is this?");
+    expect(screen.getByRole("heading", { name: /searching for music style\?/i })).toHaveTextContent(
+      "Searching for music style?"
+    );
   });
 
-  it("allows to type in the search box", async () => {
-    render(<SearchBar />);
-    userEvent.click(
-      screen.getByRole("combobox", {
-        name: /type an artist name/i,
-      })
-    );
-    await userEvent.type(screen.getByRole("combobox"), "Imagine Dragons");
-    expect(screen.getByRole("combobox")).toHaveValue("Imagine Dragons");
+  it("renders search autocomplete component", () => {
+    render(<SearchAutocomplete type="primary" />);
+    expect(screen.getByRole("combobox")).toBeVisible();
+  });
+
+  it("allows to type in the search input", async () => {
+    render(<SearchAutocomplete type="primary" />);
+    userEvent.click(screen.getByRole("combobox"));
+    await userEvent.type(screen.getByRole("combobox"), "Deftones");
+    expect(screen.getByRole("combobox")).toHaveValue("Deftones");
   });
 });

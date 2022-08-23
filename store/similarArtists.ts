@@ -1,35 +1,35 @@
 import { makeAutoObservable } from "mobx";
+import artist from "./artist";
 
 class SimilarArtistsStore {
   data: SpotifyApi.ArtistsRelatedArtistsResponse[] = [];
 
-  isLoading: boolean = true;
-
-  isLoaded: boolean = false;
+  isLoadingSimilarArtists = true;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  clear() {
+  clearSimilarArtists() {
     this.data.length = 0;
   }
 
-  update(artists: SpotifyApi.ArtistsRelatedArtistsResponse) {
-    this.clear();
+  updateSimilarArtists(artists: SpotifyApi.ArtistsRelatedArtistsResponse) {
+    this.clearSimilarArtists();
     this.data.push(artists);
   }
 
-  async fetchSimilarArtists(artistId: string): Promise<void> {
-    this.isLoading = true;
-    await fetch(`/api/related-artists/${artistId}`)
+  async fetchSimilarArtists(spotifyArtistId: string = artist.artistData.id): Promise<void> {
+    this.isLoadingSimilarArtists = true;
+
+    await fetch(`/api/related-artists/${spotifyArtistId}`)
       .then((response) => response.json())
       .then((json) => {
-        this.update(json);
+        this.updateSimilarArtists(json);
       })
-      .catch((err) => console.log("Related Artists API call:", err)); // eslint-disable-line no-console
-    this.isLoading = false;
-    this.isLoaded = true;
+      .catch((err) => console.log("Related Artists API call:", err)); // eslint-disable-line
+
+    this.isLoadingSimilarArtists = false;
   }
 }
 

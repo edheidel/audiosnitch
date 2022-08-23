@@ -1,43 +1,77 @@
 import { makeAutoObservable } from "mobx";
 
 class ArtistStore {
-  id: string = "";
+  artistList: SpotifyApi.ArtistObjectFull[] = [];
 
-  data: SpotifyApi.ArtistObjectFull[] = [];
+  isLoadingList = false;
 
-  isLoading: boolean = false;
+  artistData: SpotifyApi.ArtistObjectFull = {
+    followers: { href: null, total: 0 },
+    genres: [],
+    images: [],
+    popularity: 0,
+    name: "",
+    id: "",
+    type: "artist",
+    href: "",
+    external_urls: { spotify: "" },
+    uri: "",
+  };
 
-  isLoaded: boolean = false;
+  isLoadedArtist = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  saveId(artistId: string) {
-    this.id = artistId;
-  }
+  fetchArtistList = async (searchValue: string | string[]) => {
+    this.isLoadingList = true;
 
-  clear() {
-    this.data.length = 0;
-  }
+    await fetch(`/api/search/${searchValue}`)
+      .then((response) => response.json())
+      .then((json: SpotifyApi.ArtistSearchResponse) => {
+        this.artistList = json.artists.items.map((item) => item);
+      })
+      .catch((err) => console.log("Search API call:", err)); // eslint-disable-line no-console
 
-  update(artist: SpotifyApi.ArtistObjectFull) {
-    this.clear();
-    this.data.push(artist);
-    this.isLoaded = true;
-  }
+    this.isLoadingList = false;
+  };
 
-  async fetchArtistById(artistId: string): Promise<void> {
-    this.isLoading = true;
-    await fetch(`/api/artist/${artistId}`)
+  fetchArtistData = async (spotifyArtistId: string) => {
+    await fetch(`/api/artist/${spotifyArtistId}`)
       .then((response) => response.json())
       .then((json: SpotifyApi.ArtistObjectFull) => {
-        this.update(json);
+        this.updateArtistData(json);
       })
       .catch((err) => console.log("Artist API call:", err)); // eslint-disable-line no-console
-    this.isLoading = false;
-    this.isLoaded = true;
-  }
+    this.isLoadedArtist = true;
+  };
+
+  clearArtistList = () => {
+    this.artistList.length = 0;
+  };
+
+  clearArtistData = () => {
+    this.isLoadedArtist = false;
+    this.artistData = {
+      followers: { href: null, total: 0 },
+      genres: [],
+      images: [],
+      popularity: 0,
+      name: "",
+      id: "",
+      type: "artist",
+      href: "",
+      external_urls: { spotify: "" },
+      uri: "",
+    };
+  };
+
+  updateArtistData = (newArtistData: SpotifyApi.ArtistObjectFull) => {
+    this.clearArtistData();
+    this.artistData = newArtistData;
+    this.isLoadedArtist = true;
+  };
 }
 
 export default new ArtistStore();

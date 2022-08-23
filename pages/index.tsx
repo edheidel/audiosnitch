@@ -1,6 +1,14 @@
 import React from "react";
-import Home from "../components/Home";
+import { observer } from "mobx-react-lite";
+import SearchAutocomplete from "@/components/SearchAutocomplete/SearchAutocomplete";
+import Title from "@/components/Title/Title";
+import styles from "../styles/Home.module.scss";
 
-export default function App(): JSX.Element {
-  return <Home />;
-}
+const Home = observer(() => (
+  <div className={styles.container}>
+    <Title tag="h1" text="Searching for music style?" />
+    <SearchAutocomplete type="primary" />
+  </div>
+));
+
+export default Home;

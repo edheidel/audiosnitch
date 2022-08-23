@@ -15,7 +15,7 @@ module.exports = {
     // Handle module aliases
     "^@/components/(.*)$": "<rootDir>/components/$1",
     "^@/pages/(.*)$": "<rootDir>/pages/$1",
-    store: "<rootDir>/store/index.ts",
+    "store/(.*)$": "<rootDir>/store/$1",
     "utils/dragDrop": "<rootDir>/utils/dragDrop.ts",
   },
   // Add more setup options before each test is run

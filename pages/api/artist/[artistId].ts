@@ -2,7 +2,7 @@
 import axios from "axios";
 import Cors from "cors";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { IToken, IAccountResponse, IArtist } from "types";
+import type { IToken, IAccountResponse } from "types/interfaces";
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -41,7 +41,7 @@ function runMiddleware(
   });
 }
 
-async function fetchToken(): Promise<string> {
+async function fetchToken() {
   if (!token || token.expirationDate < Date.now()) {
     token = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -60,9 +60,9 @@ async function fetchToken(): Promise<string> {
   return token.value;
 }
 
-async function fetchArtistById(artistId: string | string[] | undefined): Promise<{}> {
-  const artist: IArtist = await axios
-    .get<Promise<IArtist>>(`${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}`, {
+async function fetchArtistById(artistId: string | string[] | undefined) {
+  const artist = await axios
+    .get(`${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}`, {
       headers: {
         Authorization: `Bearer ${await fetchToken()}`,
       },
@@ -71,7 +71,7 @@ async function fetchArtistById(artistId: string | string[] | undefined): Promise
   return artist;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   await runMiddleware(req, res, cors);
   const { artistId } = req.query;
   res.status(200).json(await fetchArtistById(artistId));

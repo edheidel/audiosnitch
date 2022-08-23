@@ -1,6 +1,14 @@
 import { AppProps } from "next/app";
+import Layout from "@/components/Layout/Layout";
+import Loader from "@/components/Loader/Loader";
 import "../styles/global.scss";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <Loader>
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  </Loader>
+);
+
+export default MyApp;

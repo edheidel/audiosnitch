@@ -20,13 +20,13 @@ import * as Sentry from "@sentry/nextjs";
 import NextErrorComponent from "next/error";
 
 // eslint-disable-next-line react/prop-types
-function CustomErrorComponent({ statusCode }) {
+const CustomErrorComponent = ({ statusCode }) => (
   // If you're using a Nextjs version prior to 12.2.1, uncomment this to
   // compensate for https://github.com/vercel/next.js/issues/8592
   // Sentry.captureUnderscoreErrorException(props);
 
-  return <NextErrorComponent statusCode={statusCode} />;
-}
+  <NextErrorComponent statusCode={statusCode} />
+);
 
 CustomErrorComponent.getInitialProps = async (contextData) => {
   // In case this is running in a serverless function, await this in order to give Sentry
