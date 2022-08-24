@@ -1,13 +1,11 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { useAutocomplete } from "@mui/base/AutocompleteUnstyled";
 import { CircularProgress } from "@mui/material";
 import { debounce } from "lodash";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import artist from "store/artist";
-import similarArtists from "store/similarArtists";
-import dragDrop from "store/dragDrop";
-import { useRouter } from "next/router";
 import styles from "./SearchAutocomplete.module.scss";
 import SearchListbox from "./SearchListbox";
 import SearchInput from "./SearchInput";
@@ -39,20 +37,16 @@ const SearchAutocomplete = observer(({ type }: ISearchAutocompleteProps) => {
     artist.clearArtistList();
   };
 
-  const handleSubmit = async (event: any, value: any) => {
-    if (value === null) {
+  const handleSubmit = async (event: any, artistData: any) => {
+    if (artistData === null) {
       artist.clearArtistData();
-      if (dragDrop.isActive) {
-        await similarArtists.fetchSimilarArtists();
-      }
     } else {
-      artist.updateArtistData(value);
-      await similarArtists.fetchSimilarArtists();
+      artist.updateArtistData(artistData);
     }
 
     document.getElementById("searchBarInput")?.blur();
     clearInput();
-    router.push(`/artist/${artist.artistData.name}`);
+    router.push(`/artist/${artist.artistData.id}`);
   };
 
   const { getRootProps, getInputProps, getListboxProps, getOptionProps } = useAutocomplete({

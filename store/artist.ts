@@ -18,6 +18,8 @@ class ArtistStore {
     uri: "",
   };
 
+  isLoadingArtist = false;
+
   isLoadedArtist = false;
 
   constructor() {
@@ -37,13 +39,17 @@ class ArtistStore {
     this.isLoadingList = false;
   };
 
-  fetchArtistData = async (spotifyArtistId: string) => {
+  fetchArtistData = async (spotifyArtistId: string | string[]) => {
+    this.isLoadingArtist = true;
+
     await fetch(`/api/artist/${spotifyArtistId}`)
       .then((response) => response.json())
       .then((json: SpotifyApi.ArtistObjectFull) => {
-        this.updateArtistData(json);
+        this.artistData = json;
       })
       .catch((err) => console.log("Artist API call:", err)); // eslint-disable-line no-console
+
+    this.isLoadingArtist = false;
     this.isLoadedArtist = true;
   };
 
@@ -52,7 +58,6 @@ class ArtistStore {
   };
 
   clearArtistData = () => {
-    this.isLoadedArtist = false;
     this.artistData = {
       followers: { href: null, total: 0 },
       genres: [],
@@ -65,12 +70,13 @@ class ArtistStore {
       external_urls: { spotify: "" },
       uri: "",
     };
+    this.isLoadedArtist = false;
   };
 
   updateArtistData = (newArtistData: SpotifyApi.ArtistObjectFull) => {
-    this.clearArtistData();
+    this.isLoadingArtist = true;
     this.artistData = newArtistData;
-    this.isLoadedArtist = true;
+    this.isLoadingArtist = false;
   };
 }
 

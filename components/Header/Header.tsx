@@ -9,15 +9,17 @@ import styles from "./Header.module.scss";
 
 const Header = observer(() => (
   <div className={styles.container}>
-    <Link href="/">
-      <IconButton
-        onClick={() => {
-          artist.clearArtistData();
-        }}
-      >
-        <IconWrapper className={styles.homeButton} icon={faHome} />
-      </IconButton>
-    </Link>
+    <div className={styles.homeButton}>
+      <Link href="/">
+        <IconButton
+          onClick={() => {
+            artist.clearArtistData();
+          }}
+        >
+          <IconWrapper className={styles.homeIcon} icon={faHome} />
+        </IconButton>
+      </Link>
+    </div>
     <div className={styles.search}>
       <SearchAutocomplete type="secondary" />
     </div>

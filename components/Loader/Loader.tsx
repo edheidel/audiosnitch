@@ -10,20 +10,19 @@ interface ILoaderProps {
 }
 
 const Loader = ({ router, children }: ILoaderProps) => {
-  const { artistName } = router.query;
+  const { artistId } = router.query;
 
   React.useEffect(() => {
     device.calculateIsMobile();
   }, []);
 
   React.useEffect(() => {
-    async function loadArtistFromRoute() {
-      await artist.fetchArtistList(artistName);
-      artist.updateArtistData(artist.artistList[0]);
-      await similarArtists.fetchSimilarArtists();
+    function loadArtistFromRoute() {
+      artist.fetchArtistData(artistId);
+      similarArtists.fetchSimilarArtists(artistId);
     }
 
-    if (artistName) {
+    if (artistId) {
       loadArtistFromRoute();
     }
   }, [router]);

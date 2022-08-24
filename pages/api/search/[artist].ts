@@ -60,10 +60,10 @@ async function fetchToken(): Promise<string> {
   return token.value;
 }
 
-async function fetchArtists(artist: string | string[] | undefined): Promise<{}> {
+async function searchArtist(artist: string | string[] | undefined): Promise<{}> {
   const artists: SpotifyApi.ArtistSearchResponse = await axios
     .get<Promise<SpotifyApi.ArtistSearchResponse>>(
-      `${SPOTIFY_SEARCH_ENDPOINT}?q=artist:${artist}&type=artist&market=ES&limit=10`,
+      `${SPOTIFY_SEARCH_ENDPOINT}?q=artist:${artist}&type=artist&limit=10&market=ES`,
       {
         headers: {
           Authorization: `Bearer ${await fetchToken()}`,
@@ -77,5 +77,5 @@ async function fetchArtists(artist: string | string[] | undefined): Promise<{}> 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors);
   const { artist } = req.query;
-  res.status(200).json(await fetchArtists(artist));
+  res.status(200).json(await searchArtist(artist));
 };
