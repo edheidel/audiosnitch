@@ -22,19 +22,22 @@ const SearchAutocomplete = observer(({ type }: ISearchAutocompleteProps) => {
   const debouncedFetch = React.useCallback(
     debounce((value: string) => {
       artist.fetchArtistList(value);
-    }, 500),
+    }, 600),
     []
   );
-
-  const handleInputChange = async (event: React.BaseSyntheticEvent) => {
-    const { value } = event.target;
-    setInputValue(value);
-    debouncedFetch(value);
-  };
 
   const clearInput = () => {
     setInputValue("");
     artist.clearArtistList();
+  };
+
+  const handleInputChange = async (event: React.BaseSyntheticEvent) => {
+    if (inputValue.length === 0) {
+      clearInput();
+    }
+    const { value } = event.target;
+    setInputValue(value);
+    debouncedFetch(value);
   };
 
   const handleSubmit = async (event: any, artistData: any) => {
@@ -45,8 +48,8 @@ const SearchAutocomplete = observer(({ type }: ISearchAutocompleteProps) => {
     }
 
     document.getElementById("searchBarInput")?.blur();
+    router.push(`/artist/${artistData.id}`);
     clearInput();
-    router.push(`/artist/${artist.artistData.id}`);
   };
 
   const { getRootProps, getInputProps, getListboxProps, getOptionProps } = useAutocomplete({
@@ -84,14 +87,14 @@ const SearchAutocomplete = observer(({ type }: ISearchAutocompleteProps) => {
           />
         )}
       </div>
-      {artist.artistList.length > 0 && inputValue.length > 0 && (
+      <div className={styles.listbox}>
         <SearchListbox
           getListboxProps={getListboxProps}
           getOptionProps={getOptionProps}
           options={artist.artistList}
           inputValue={inputValue}
         />
-      )}
+      </div>
     </div>
   );
 });

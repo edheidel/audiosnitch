@@ -13,8 +13,12 @@ const Home = observer(() => {
 
   return (
     <div className={styles.container}>
-      <Title tag="h1" text="Searching for music style?" />
-      <SearchAutocomplete type="primary" />
+      <div>
+        <Title tag="h1" text="Searching for music style?" />
+      </div>
+      <div className={styles.search}>
+        <SearchAutocomplete type="primary" />
+      </div>
     </div>
   );
 });
