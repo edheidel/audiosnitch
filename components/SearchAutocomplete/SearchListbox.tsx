@@ -2,6 +2,7 @@ import React, { HTMLAttributes } from "react";
 import { autocompleteClasses, styled } from "@mui/material";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
+import artist from "store/artist";
 
 interface IGetOptionProps {
   option: SpotifyApi.ArtistObjectFull;
@@ -17,7 +18,6 @@ interface ISearchListBoxProps {
 
 const StyledListbox = styled("ul")(
   () => `
-  width: 85%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   list-style: none;
@@ -43,29 +43,34 @@ const StyledListbox = styled("ul")(
 `
 );
 
-const SearchListBox = ({ getListboxProps, getOptionProps, options, inputValue }: ISearchListBoxProps) => (
-  <StyledListbox {...getListboxProps()}>
-    {options.map((option, index) => {
-      const matches = match(option.name, inputValue);
-      const parts = parse(option.name, matches);
-      return (
-        <li {...getOptionProps({ option, index })} key={option.id}>
-          <div>
-            {parts.map((part, idx) => (
-              <span
-                style={{
-                  fontWeight: part.highlight ? 700 : 400,
-                }}
-                key={idx} // eslint-disable-line react/no-array-index-key
-              >
-                {part.text}
-              </span>
-            ))}
-          </div>
-        </li>
-      );
-    })}
-  </StyledListbox>
-);
+const SearchListBox = ({ getListboxProps, getOptionProps, options, inputValue }: ISearchListBoxProps) => {
+  if (artist.artistList.length > 0 && inputValue.length > 0) {
+    return (
+      <StyledListbox {...getListboxProps()}>
+        {options.map((option, index) => {
+          const matches = match(option.name, inputValue);
+          const parts = parse(option.name, matches);
+          return (
+            <li {...getOptionProps({ option, index })} key={option.id}>
+              <div>
+                {parts.map((part, idx) => (
+                  <span
+                    style={{
+                      fontWeight: part.highlight ? 700 : 400,
+                    }}
+                    key={idx} // eslint-disable-line react/no-array-index-key
+                  >
+                    {part.text}
+                  </span>
+                ))}
+              </div>
+            </li>
+          );
+        })}
+      </StyledListbox>
+    );
+  }
+  return null;
+};
 
 export default SearchListBox;

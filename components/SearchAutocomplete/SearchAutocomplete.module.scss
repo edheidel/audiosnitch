@@ -1,17 +1,18 @@
 // Search component on the Home page
+
 .wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   width: 450px;
-  max-width: 80vw;
+  max-width: 75vw;
 }
 
 .container {
   display: flex;
   flex-direction: row;
   align-items: center;
+  box-sizing: border-box;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
   color: whitesmoke;
@@ -37,11 +38,11 @@
 }
 
 // Search component in the header
+
 .wrapperNav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   width: 400px;
   max-width: 60vw;
 }
@@ -73,4 +74,13 @@
   font-size: 1rem;
   padding-right: 0.8rem;
   cursor: pointer;
+}
+
+// Listbox
+
+.listbox {
+  position: relative;
+  margin-top: 1px;
+  margin-left: 25px;
+  margin-right: 25px;
 }

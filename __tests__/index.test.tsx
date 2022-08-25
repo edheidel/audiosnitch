@@ -19,7 +19,7 @@ describe("Home page", () => {
   it("allows to type in the search input", async () => {
     render(<SearchAutocomplete type="primary" />);
     userEvent.click(screen.getByRole("combobox"));
-    await userEvent.type(screen.getByRole("combobox"), "Deftones");
-    expect(screen.getByRole("combobox")).toHaveValue("Deftones");
+    await userEvent.type(screen.getByRole("combobox"), "Hatfield & The North");
+    expect(screen.getByRole("combobox")).toHaveValue("Hatfield & The North");
   });
 });

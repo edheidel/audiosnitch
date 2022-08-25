@@ -7,6 +7,14 @@
   animation: slide 1s ease-out;
 }
 
+.search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+}
+
 @keyframes slide {
   0% {
     transform: translateY(15%);
