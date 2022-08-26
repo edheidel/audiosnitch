@@ -48,7 +48,7 @@ const SearchAutocomplete = observer(({ type }: ISearchAutocompleteProps) => {
     }
 
     document.getElementById("searchBarInput")?.blur();
-    router.push(`/artist/${artistData.id}`);
+    router.push(`/artist/${artist.artistData.id}`);
     clearInput();
   };
 
