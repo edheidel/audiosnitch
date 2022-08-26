@@ -34,7 +34,11 @@ const ArtistPhoto = observer(() => {
             </IconButton>
           }
         >
-          <Avatar src={artist.artistData.images[1].url} alt={artist.artistData.name} sx={{ width: 150, height: 150 }} />
+          <Avatar
+            src={artist.artistData.images[1]?.url}
+            alt={artist.artistData.name}
+            sx={{ width: 150, height: 150 }}
+          />
         </Badge>
       </div>
     );
