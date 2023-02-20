@@ -1,78 +1,35 @@
-/* eslint-disable */
-import axios from "axios";
-import Cors from "cors";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { IToken, IAccountResponse } from "types/interfaces";
 
-const clientId = process.env.SPOTIFY_CLIENT_ID;
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-const SPOTIFY_ARTISTS_ENDPOINT = "https://api.spotify.com/v1/artists";
+import { cors, runMiddleware } from "../middleware";
+import { fetchWithToken } from "../spotifyApi";
+import { SPOTIFY_ARTISTS_ENDPOINT } from "../consts";
 
-let token: IToken;
-
-const cors = Cors({
-  methods: ["GET", "HEAD"],
-});
-
-function runMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  fn: {
-    (
-      req: Cors.CorsRequest,
-      res: {
-        statusCode?: number | undefined;
-        setHeader(key: string, value: string): any;
-        end(): any;
-      },
-      next: (err?: any) => any
-    ): void;
-    (arg0: NextApiRequest, arg1: NextApiResponse<any>, arg2: (result: any) => void): void;
-  }
-) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-
-      return resolve(result);
-    });
-  });
-}
-
-async function fetchToken(): Promise<string> {
-  if (!token || token.expirationDate < Date.now()) {
-    token = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
-      },
-      body: "grant_type=client_credentials",
-    })
-      .then<IAccountResponse>((response) => response.json())
-      .then<IToken>((data) => ({
-        value: data.access_token,
-        expirationDate: Date.now() + data.expires_in,
-      }));
-  }
-  return token.value;
-}
-
-async function fetchRelatedArtists(artistId: string | string[] | undefined): Promise<{}> {
-  const artist = await axios
-    .get(`${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}/related-artists`, {
-      headers: {
-        Authorization: `Bearer ${await fetchToken()}`,
-      },
-    })
-    .then((response) => response.data);
-  return artist;
-}
-
+/**
+ * Setting up a Node.js serverless function for an HTTP request to the Spotify API.
+ * @returns An object with 20 related artists (by default).
+ * @link https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artists-related-artists
+ */
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+  // Initialise API middleware with the CORS config.
   await runMiddleware(req, res, cors);
-  const { artistId } = req.query;
-  res.status(200).json(await fetchRelatedArtists(artistId));
+
+  // Extract the artistId from the query parameters in the request object.
+  const artistId = req.query.artistId as string;
+
+  if (!artistId) {
+    throw new Error("Artist ID parameter is required");
+  }
+
+  // Construct Spotify API URL to get information about an artist using the artistId.
+  const url = `${SPOTIFY_ARTISTS_ENDPOINT}/${artistId}/related-artists`;
+
+  try {
+    // Make an HTTP request to the Spotify API URL with an access token.
+    const response = await fetchWithToken(url);
+    res.status(200).json(response);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(`Error occurred while fetching ${url}: ${error}`);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };

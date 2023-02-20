@@ -10,16 +10,19 @@ module.exports = {
 
     // Handle image imports
     // https://jestjs.io/docs/webpack#handling-static-assets
-    "^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i": `<rootDir>/__mocks__/fileMock.js`,
+    "^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i": "<rootDir>/__mocks__/fileMock.js",
 
     // Handle module aliases
-    "^@/components/(.*)$": "<rootDir>/components/$1",
+    "^@/components/(.*)$": "<rootDir>/src/components/$1",
     "^@/pages/(.*)$": "<rootDir>/pages/$1",
-    "store/(.*)$": "<rootDir>/store/$1",
-    "utils/dragDrop": "<rootDir>/utils/dragDrop.ts",
+    "^@/store/(.*)$": "<rootDir>/src/store/$1",
+    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
   },
   // Add more setup options before each test is run
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: [
+    "<rootDir>/jest.setup.js",
+    "@testing-library/jest-dom/extend-expect",
+  ],
   testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   transform: {
     // Use babel-jest to transpile tests with the next/babel preset

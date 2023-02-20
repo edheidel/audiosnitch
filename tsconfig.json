@@ -5,6 +5,7 @@
     "allowUnusedLabels": false,
     "declaration": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -27,14 +28,20 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"]
+      "@/components/*": [
+        "src/components/*"
+      ]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "utils/APIController.ts", "jest.config.js", "jest.setup.js", "__tests__/index.test.tsx"  ],
+    "**/*.tsx",
+    "src/utils/APIController.ts",
+    "jest.config.js",
+    "jest.setup.js",
+    "pages/index.spec.tsx"
+  ],
   "exclude": [
     "node_modules"
   ]

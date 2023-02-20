@@ -1,9 +1,27 @@
 {
+  "root": true,
+  "globals": {
+    "SpotifyApi": "readonly"
+  },
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
-  "extends": ["plugin:react/recommended", "airbnb", "plugin:@next/next/recommended", "prettier"],
+  // Coding style configuration.
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:@next/next/recommended"
+  ],
+  // Linting rules for the frameworks and other dependencies.
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "import",
+    "react",
+    "react-hooks",
+    "testing-library"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -12,25 +30,62 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier", "testing-library"],
-  "overrides": [
-    // Only uses Testing Library lint rules in test files
-    {
-      "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
-      "extends": ["plugin:testing-library/react"]
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
     }
-  ],
+  },
   "rules": {
-    "prettier/prettier": "error",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": "off",
-    "import/no-unresolved": "off",
-    "import/extensions": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/jsx-no-bind": "off",
-    "no-undef": "off",
-    "@typescript-eslint/no-use-before-define": "error",
-    "no-use-before-define": "off",
-    "react/function-component-definition": [2, { "namedComponents": "arrow-function" }]
-  }
+    /******************************************************/
+    /* ESLint rules: https://eslint.org/docs/latest/rules */
+    /******************************************************/
+
+    "no-unused-vars": ["error", { 
+      "argsIgnorePattern": "^_" 
+    }],
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
+    "max-len": ["error", {
+      "code": 120 
+    }],
+    "quotes": ["error", "double"],
+
+    /****************************************************************************************/
+    /* Import rules: https://github.com/import-js/eslint-plugin-import/tree/main/docs/rules */
+    /****************************************************************************************/
+
+    "import/extensions": [0,"never"],
+    "import/prefer-default-export": 0,
+
+    /***************************************************************************************/
+    /* JSX rules: https://github.com/jsx-eslint/eslint-plugin-react/tree/master/docs/rules */
+    /***************************************************************************************/
+
+    "react/jsx-filename-extension": [1, {
+        "extensions": [".jsx", ".tsx"]
+    }],
+    "react/jsx-props-no-spreading": 0,
+    "react/function-component-definition": [2, {
+        "namedComponents": "arrow-function"
+    }],
+    "react/react-in-jsx-scope": 0
+  },
+  "overrides": [
+    // Override linting rules specifically for the test files.
+    {
+      "files": [
+      "**/__tests__/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "extends": [
+        "plugin:testing-library/react"
+      ]
+    }
+  ]
 }
