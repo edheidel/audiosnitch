@@ -8,7 +8,7 @@
 
 Find genres for the music you are listening to.
 
-![Gif](./demo.gif)
+![Gif](./public/demo.gif)
 
 Deployed version: https://which-music-style-is-this.vercel.app/
 
