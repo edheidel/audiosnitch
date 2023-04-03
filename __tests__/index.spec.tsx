@@ -36,14 +36,14 @@ describe("Home", () => {
     const title = screen.getByTestId("home-title");
 
     expect(title).toBeInTheDocument();
-    expect(screen.getByText("Searching for music style?")).toBeInTheDocument();
+    expect(screen.getByText("Ready to discover more music?")).toBeInTheDocument();
   });
 
   it("should render the SearchAutocomplete component correctly", () => {
     const searchInput = screen.getByPlaceholderText("Type an artist name");
 
     expect(searchInput).toBeInTheDocument();
-    expect(searchInput).toHaveAttribute("type", "primary");
+    expect(searchInput).toHaveAttribute("type", "homepage");
   });
 
   it("should clear artist data and artist list on mount", async () => {

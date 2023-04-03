@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { artistStore } from "../../store/artistStore";
 
 import { ArtistPhoto } from "../../components/artist-photo/ArtistPhoto";
-import { ChipContainer } from "../../components/chips/ChipContainer";
+import { ChipContainer } from "../../components/chip-container/ChipContainer";
 import { SimilarArtistsContainer } from "../../components/similar-artists/SimilarArtistsContainer";
 
 /**

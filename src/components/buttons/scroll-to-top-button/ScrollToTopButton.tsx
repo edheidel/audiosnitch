@@ -7,17 +7,20 @@ import {
 } from "react";
 import { Fab } from "@mui/material";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import classNames from "classnames";
 
 import { IconWrapper } from "../../common/icon-wrapper/IconWrapper";
 
 import styles from "./ScrollToTopButton.module.scss";
 
-/** A small button which appears during the page scroll. Allows user to navigate back to the top of the page. */
+/** A small button which appears during the page scroll. Allows user to quickly navigate back to the top of a page. */
 export const ScrollToTopButton: FC = memo(() => {
   // Initialise the visual state of the button.
   const [isVisible, setIsVisible] = useState(false);
   /** Make the button appear and disapear after scrolling the first 100 px threshold. */
-  const toggleVisibility = useCallback(() => (window.scrollY > 100 ? setIsVisible(true) : setIsVisible(false)), []);
+  const toggleVisibility = useCallback(() => (
+    window.scrollY > 100 ? setIsVisible(true) : setIsVisible(false)
+  ), []);
 
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
@@ -31,12 +34,22 @@ export const ScrollToTopButton: FC = memo(() => {
   const handleClick = () => { window.scroll({ top: 0, behavior: "smooth" }); };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+    >
       <Fab
-        className={isVisible ? styles.buttonVisible : styles.buttonInvisible}
+        className={classNames(styles.button, {
+          [styles.visible]: isVisible,
+        })}
         onClick={handleClick}
       >
-        <IconWrapper icon={faChevronUp} style={{ height: "1.5rem" }} />
+        <IconWrapper
+          icon={faChevronUp}
+          style={{
+            paddingTop: "0.25rem",
+            fontSize: "1.5rem",
+          }}
+        />
       </Fab>
     </div>
   );

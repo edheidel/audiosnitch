@@ -7,12 +7,13 @@ export const IconWrapper: FC<FontAwesomeIconProps> = memo(({
   className,
   onClick,
 }) => (
-  <FontAwesomeIcon
-    icon={icon}
-    style={style}
-    className={className}
-    onClick={onClick}
-  />
+  <div className={className}>
+    <FontAwesomeIcon
+      icon={icon}
+      style={style}
+      onClick={onClick}
+    />
+  </div>
 ));
 
 IconWrapper.displayName = "IconWrapper";

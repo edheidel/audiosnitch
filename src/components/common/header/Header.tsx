@@ -13,12 +13,15 @@ export const Header: FC = () => (
     <div className={styles.homeButton}>
       <Link href="/">
         <IconButton>
-          <IconWrapper className={styles.homeIcon} icon={faHome} />
+          <IconWrapper
+            className={styles.homeIcon}
+            icon={faHome}
+          />
         </IconButton>
       </Link>
     </div>
     <div className={styles.search}>
-      <SearchAutocomplete type="secondary" />
+      <SearchAutocomplete type="navbar" />
     </div>
   </div>
 );

@@ -13,6 +13,7 @@ import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import debounce from "lodash.debounce";
 
+import classNames from "classnames";
 import { artistStore } from "../../store/artistStore";
 import { IconWrapper } from "../common/icon-wrapper/IconWrapper";
 
@@ -22,17 +23,17 @@ import { SearchListBox } from "./SearchListbox";
 import styles from "./SearchAutocomplete.module.scss";
 
 interface SearchAutocompleteProps {
-  type: "primary" | "secondary";
+  type: "homepage" | "navbar";
 }
 
 export const SearchAutocomplete: FC<SearchAutocompleteProps> = observer(({ type }) => {
-  // Define the input state.
+  // Define the input state
   const [inputValue, setInputValue] = useState("");
   const [prevInputValue, setPrevInputValue] = useState("");
   // Get the router object from Next.js.
   const router = useRouter();
 
-  // Desctucture observables from the store.
+  // Desctucture observables from the store
   const {
     list,
     isListLoading,
@@ -42,7 +43,7 @@ export const SearchAutocomplete: FC<SearchAutocompleteProps> = observer(({ type 
     updateArtistData,
   } = artistStore;
 
-  // Use the useEffect hook to fetch artist data with a debounced delay.
+  // Use the useEffect hook to fetch artist data with a debounced delay
   useEffect(() => {
     const debouncedFetch = debounce((value: string) => {
       if (value !== prevInputValue && value !== "") {
@@ -58,13 +59,13 @@ export const SearchAutocomplete: FC<SearchAutocompleteProps> = observer(({ type 
     };
   }, [inputValue, prevInputValue, fetchArtistList]);
 
-  // Clears the search input value and dropdown list.
+  // Clears the search input value and dropdown list
   const clearInput = () => {
     setInputValue("");
     clearArtistList();
   };
 
-  // Handles changes to the input value.
+  // Handles changes to the input value
   const handleInputChange = async (event: BaseSyntheticEvent) => {
     const { value } = event.target;
 
@@ -75,25 +76,25 @@ export const SearchAutocomplete: FC<SearchAutocompleteProps> = observer(({ type 
     setInputValue(value);
   };
 
-  // Handle form submission.
+  // Handle form submission
   const handleSubmit = (event: FormEvent<HTMLFormElement>, artistData: SpotifyApi.ArtistObjectFull | null) => {
     event.preventDefault();
 
-    // Clear the artist data or update it with the selected option.
+    // Clear the artist data or update it with the selected option
     if (artistData === null) {
       clearArtistData();
     } else {
       updateArtistData(artistData);
     }
 
-    // Remove focus from the input element and navigate to the selected artist page.
+    // Remove focus from the input element and navigate to the selected artist page
     document.getElementById("searchBarInput")?.blur();
     router.push(`/artist/${artistData?.id}`);
     // Clear the input value and artist list
     clearInput();
   };
 
-  // Get the necessary props from the MUI useAutocomplete hook.
+  // Get the necessary props from the MUI useAutocomplete hook
   const {
     getRootProps,
     getInputProps,
@@ -102,7 +103,7 @@ export const SearchAutocomplete: FC<SearchAutocompleteProps> = observer(({ type 
   } = useAutocomplete({
     options: list,
     getOptionLabel: (option) => option.name,
-    // Pass a callback function to handle the selection of an option.
+    // Pass a callback function to handle the option selection
     onChange: (_event, value) => handleSubmit(_event as FormEvent<HTMLFormElement>, value),
     autoHighlight: true,
     isOptionEqualToValue: (option, value) => option.id === value.id,
@@ -110,45 +111,52 @@ export const SearchAutocomplete: FC<SearchAutocompleteProps> = observer(({ type 
 
   return (
     <div
-      className={type === "primary" ? styles.wrapper : styles.wrapperNav}
+      className={classNames(styles.wrapper, {
+        [styles.navbar]: type === "navbar",
+      })}
       data-testid="search-autocomplete"
     >
-      <div className={type === "primary" ? styles.container : styles.containerNav} {...getRootProps()}>
-        {/* Render the search icon */}
+      <div
+        className={classNames(styles.container, {
+          [styles.navbar]: type === "navbar",
+        })}
+        {...getRootProps()}
+      >
         <IconWrapper
-          className={type === "primary" ? styles.searchIcon : styles.searchIconNav}
+          className={classNames(styles.searchIcon, {
+            [styles.navbar]: type === "navbar",
+          })}
           icon={faSearch}
         />
-        {/* Render the search input */}
         <SearchInput
           type={type}
           getInputProps={getInputProps}
           inputValue={inputValue}
           onChange={handleInputChange}
         />
-        {/* Render loading spinner when the artist list is being fetched */}
+
         {isListLoading && (
           <div>
             <CircularProgress
               size={25}
-              sx={
-                type === "primary"
-                  ? { color: "white", marginRight: 2 }
-                  : { color: "black", marginRight: 2 }
-              }
+              sx={type === "homepage"
+                ? { color: "white", marginRight: 2 }
+                : { color: "black", marginRight: 2 }}
             />
           </div>
         )}
-        {/* Render a clear icon if there is input value */}
+
         {inputValue.length > 0 && !isListLoading && (
           <IconWrapper
-            className={type === "primary" ? styles.xIcon : styles.xIconNav}
+            className={classNames(styles.clearIcon, {
+              [styles.navbar]: type === "navbar",
+            })}
             icon={faXmark}
             onClick={clearInput}
           />
         )}
+
       </div>
-      {/* Render the search options list */}
       <div className={styles.listbox}>
         <SearchListBox
           getListboxProps={getListboxProps}

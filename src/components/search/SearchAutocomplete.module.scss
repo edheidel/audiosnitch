@@ -1,11 +1,13 @@
-// Search component on the Home page
-
 .wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 450px;
+  width: 400px;
   max-width: 75vw;
+
+  &.navbar {
+    max-width: 60vw;
+  }
 }
 
 .container {
@@ -14,73 +16,47 @@
   align-items: center;
   box-sizing: border-box;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0);
-  color: whitesmoke;
   border: 1px solid whitesmoke;
   border-radius: 2rem;
-}
+  background-color: rgba(0, 0, 0, 0);
+  color: whitesmoke;
 
-.container:focus-within {
-  box-shadow: 0 0 10px #9ecaed;
+  &.navbar {
+    background-color: #ffffff;
+  }
+
+  &:focus-within {
+    box-shadow: 0 0 10px #9ecaed;
+  }
 }
 
 .searchIcon {
-  padding: 0 0.8rem 0 1rem;
+  width: 1rem;
   height: 1rem;
+  padding-right: 1.5rem;
+  padding-left: 1rem;
+
+  &.navbar {
+    color: rgba(0, 0, 0, 0.4);
+  }
 }
 
-.xIcon {
+.clearIcon {
   margin-right: 0.5rem;
+  padding-right: 0.8rem;
   color: whitesmoke;
   font-size: 1.3rem;
-  padding-right: 0.8rem;
   cursor: pointer;
+
+  &.navbar {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+  }
 }
-
-// Search component in the header
-
-.wrapperNav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 400px;
-  max-width: 60vw;
-}
-
-.containerNav {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  box-sizing: border-box;
-  width: 100%;
-  background-color: #ffffff;
-  color: whitesmoke;
-  border: 1px solid whitesmoke;
-  border-radius: 2rem;
-}
-
-.containerNav:focus-within {
-  box-shadow: 0 0 10px #9ecaed;
-}
-
-.searchIconNav {
-  padding: 0 0.8rem 0 1rem;
-  color: rgba(0, 0, 0, 0.4);
-}
-
-.xIconNav {
-  margin-right: 0.5rem;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 1rem;
-  padding-right: 0.8rem;
-  cursor: pointer;
-}
-
-// Listbox
 
 .listbox {
   position: relative;
   margin-top: 1px;
-  margin-left: 25px;
   margin-right: 25px;
+  margin-left: 25px;
 }
