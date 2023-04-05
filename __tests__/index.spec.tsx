@@ -25,21 +25,21 @@ describe("Home", () => {
     cleanup();
   });
 
-  it("should render the container element correctly", () => {
+  it("should render container element correctly", () => {
     const container = screen.getByTestId("home-container");
 
     expect(container).toBeInTheDocument();
     expect(container).toHaveClass("container");
   });
 
-  it("should render the Title component correctly", () => {
+  it("should render Title component correctly", () => {
     const title = screen.getByTestId("home-title");
 
     expect(title).toBeInTheDocument();
     expect(screen.getByText("Ready to discover more music?")).toBeInTheDocument();
   });
 
-  it("should render the SearchAutocomplete component correctly", () => {
+  it("should render SearchBar component correctly", () => {
     const searchInput = screen.getByPlaceholderText("Type an artist name");
 
     expect(searchInput).toBeInTheDocument();

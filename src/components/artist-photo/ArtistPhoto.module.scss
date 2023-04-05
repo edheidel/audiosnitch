@@ -1,11 +1,21 @@
-.container {
+.wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 1.5rem;
 }
 
-.buttonWrapper {
+.photo {
+  position: absolute;
+  top: 6rem;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;

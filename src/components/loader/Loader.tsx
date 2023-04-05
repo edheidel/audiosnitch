@@ -1,22 +1,24 @@
 import { type FC, useEffect } from "react";
 import { useRouter } from "next/router";
-
 import { observer } from "mobx-react-lite";
+
 import { artistStore } from "../../store/artistStore";
 
-// TO-DO: Create a fallback behaviour if artist does not exist (route with bad artistId).
-
 /**
- * Layer of the app that prepares the MobX store prior to the page and its visual component initialisation.
+ * Layer of the app that prepares the MobX store prior to the visual component rendering.
  */
 export const Loader: FC = observer(() => {
   const router = useRouter();
-  // Get artist ID from the browser url.
+  // Get artist ID from browser url
   const urlWithArtistId = router.query.artistId as string;
-  // Get the methods from the store.
-  const { fetchArtistData, fetchSimilarArtists, artistExists } = artistStore;
+  // Get methods from the store
+  const {
+    fetchArtistData,
+    fetchSimilarArtists,
+    artistExists,
+  } = artistStore;
 
-  // Initialise the store by fetching the artist information from the Spotify API.
+  // Initialise the store by fetching artist information from Spotify API
   useEffect(() => {
     if (urlWithArtistId) {
       fetchArtistData(urlWithArtistId);
@@ -27,9 +29,11 @@ export const Loader: FC = observer(() => {
     if (artistExists && urlWithArtistId) {
       fetchSimilarArtists(urlWithArtistId);
     }
-  }, [artistExists, urlWithArtistId, fetchSimilarArtists]);
+  }, [
+    artistExists,
+    urlWithArtistId,
+    fetchSimilarArtists,
+  ]);
 
   return null;
 });
-
-Loader.displayName = "Loader";

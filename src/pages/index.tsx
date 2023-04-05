@@ -2,13 +2,12 @@ import { type FC, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { artistStore } from "../store/artistStore";
-import { SearchAutocomplete } from "../components/search/SearchAutocomplete";
-import { Title } from "../components/common/title/Title";
+import { SearchBar } from "../components/search-bar/SearchBar";
 
 import styles from "./index.module.scss";
 
 const Home: FC = observer(() => {
-  // Resets the artist store on the redirect to home page.
+  // Reset the artist store after redirect to home page
   useEffect(() => artistStore.clearAllData(), []);
 
   return (
@@ -17,16 +16,13 @@ const Home: FC = observer(() => {
       data-testid="home-container"
     >
       <div data-testid="home-title">
-        <Title
-          tag="h1"
-          text="Ready to discover more music?"
-        />
+        <h1>Ready to discover more music?</h1>
       </div>
       <div
         className={styles.search}
         data-testid="home-search"
       >
-        <SearchAutocomplete type="homepage" />
+        <SearchBar type="homepage" />
       </div>
     </div>
   );

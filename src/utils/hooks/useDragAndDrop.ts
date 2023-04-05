@@ -4,14 +4,16 @@ import { useRouter } from "next/router";
 import { artistStore } from "../../store/artistStore";
 
 export const useDragAndDrop = () => {
-  const [isActive, setIsActive] = useState(false);
+  // Use to enable or disable visual overlay
+  const [isDropAreaActive, setIsDropAreaActive] = useState(false);
+  // Use to track dragging state
   const [isDragging, setIsDragging] = useState(false);
   const { fetchArtistData } = artistStore;
-  // Get the Next.js object with information about the current route.
+  // Get Next.js object with information about the current route
   const router = useRouter();
 
   const enableDrop = (boolean: boolean) => {
-    setIsActive(boolean);
+    setIsDropAreaActive(boolean);
   };
 
   const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
@@ -40,7 +42,7 @@ export const useDragAndDrop = () => {
   };
 
   return {
-    isActive,
+    isDropAreaActive,
     isDragging,
     handleDragStart,
     handleDragLeave,

@@ -3,35 +3,29 @@ import { useRouter } from "next/router";
 
 import { useDragAndDrop } from "../../utils/hooks/useDragAndDrop";
 import { DragAndDropOverlay } from "../drag-and-drop/DragAndDropOverlay";
-import { Header } from "../common/header/Header";
+import { NavigationBar } from "./navigation-bar/NavigationBar";
 import { ScrollToTopButton } from "../buttons/scroll-to-top-button/ScrollToTopButton";
 
 import styles from "./Layout.module.scss";
-
-/**
- * TO-DO
- * Context and children update cause the component to re-render.
- * Header re-renders for 70ms. Optimize performance.
- */
 
 type LayoutProps = {
   children: ReactNode;
 };
 
 /**
- * HOC that positions and wraps the page content with other elements, such as:
- * - Header
+ * This high order component positions page content and adds other elements, such as:
+ * - Navigation bar
  * - Drag and drop overlay
  * - Scroll-to-top button
  */
 export const Layout: FC<LayoutProps> = ({ children }) => {
-  // Get the Next.js object with information about the current route.
+  // Get Next.js object with information about current route
   const router = useRouter();
-  // Get artist ID from the browser url.
+  // Get artist ID from browser url
   const urlWithArtistId = router.query.artistId as string;
 
   const {
-    isActive,
+    isDropAreaActive,
     isDragging,
     handleDragStart,
     handleDragLeave,
@@ -40,14 +34,14 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div
-      className={styles.wrapper}
+      className={styles.layoutWrapper}
       onDragStart={handleDragStart}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragStart}
     >
-      {urlWithArtistId && <Header />}
+      {urlWithArtistId && <NavigationBar />}
 
-      {isActive && (
+      {isDropAreaActive && (
         <DragAndDropOverlay
           isDragging={isDragging}
           handleDragStart={handleDragStart}

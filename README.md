@@ -1,49 +1,51 @@
-# Evolution TypeScript bootcamp project
+# AudioSnitch
 
-![Banner](https://user-images.githubusercontent.com/39806020/173252914-c4987705-04c5-4d89-8360-fa5012147d2c.png)
+![GitHub issues](https://img.shields.io/github/issues-raw/edheidel/audiosnitch?style=flat-square)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/edheidel/audiosnitch?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/edheidel/audiosnitch?style=flat-square)
+![GitHub deployments](https://img.shields.io/github/deployments/edheidel/audiosnitch/production?style=flat-square)
 
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/edheidel/which-music-style-is-this?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/edheidel/which-music-style-is-this?style=flat-square)
-![GitHub deployments](https://img.shields.io/github/deployments/edheidel/which-music-style-is-this/production?style=flat-square)
+Find genres for the music you love.
 
-Find genres for the music you are listening to.
-
-![Gif](./public/demo.gif)
-
-Deployed version: https://which-music-style-is-this.vercel.app/
+Deployed version: https://audiosnitch.app/
 
 ## Technologies used
-- TypeScript
-- React
-- [Next.js](https://nextjs.org/)
+- [Next.js](https://nextjs.org/) (TypeScript, React)
 - [Material UI](https://mui.com/)
-- CSS Modules, Flexbox, animations
 - [Jest](https://jestjs.io/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-- [ESLint](https://eslint.org/), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://eslint.org/)
 
 ## How it works
-1. The server handles an authentication with Spotify API via [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization/client-credentials/) and fetches artist data via [/search endpoint](https://developer.spotify.com/documentation/web-api/reference/#/operations/search).
-3. The custom Artists API outputs a JSON with the artist data.
-Example: `https://which-music-style-is-this.vercel.app/api/artists/imagine%20dragons`
-3. Data is parsed on the client side and gets rendered on the UI using React components.
+1. Middleware handles the authentication with Spotify API via [Client Credentials Flow](https://developer.spotify.com/documentation/general/guides/authorization/client-credentials/).
+2. Next.js backend uses Spotify API for creating own endpoints:
+- [/api/search](https://audiosnitch.app/api/search/burzum)
+- [/api/artist](https://audiosnitch.app/api/artist/7L6u6TyhjuwubrcojPeNgf)
+- [/api/related-artists](https://audiosnitch.app/api/related-artists/7L6u6TyhjuwubrcojPeNgf)
+3. Client parses and renders data on the UI using React components.
 
 ## How to use
-Download the repo and install dependencies:
+Install dependencies:
 ```
 yarn
 ```
-Create an app in [Spotify Developer Dashboard](https://developer.spotify.com/dashboard). Store `Client ID` and `Client Secret` keys in `.env.local` file in the project root folder:
+Create an app in [Spotify Developer Dashboard](https://developer.spotify.com/dashboard). 
+
+Store `Client ID` and `Client Secret` keys in `.env.local` file in the project root folder.
 ```
-SPOTIFY_CLIENT_ID=123456789f4540bb8d19b7b3a6c9cxyz
-SPOTIFY_CLIENT_SECRET=123456789800c40a2b4cd202a1df5bxyz
+#Example
+SPOTIFY_CLIENT_ID=ab12cd34ef5678901234gh56ij78k9l0
+SPOTIFY_CLIENT_SECRET=ab12cd34ef5678901234gh56ij78k9l1
 ```
 
-Set up the local environment by running:
+Start the local environment by running:
 ```
 yarn dev
 ```
-To start unit tests run:
+Run tests with:
 ```
 yarn test
 ```
-💡 When deploying the app, make sure that the `Client ID` and `Client Secret` keys are stored in a production `.env` configuration.
+
+To deploy the app, merge changes to remote `main` branch. GitHub action will trigger automatic deployment to Vercel.
+
+💡 Before deploying the app, make sure that `Client ID` and `Client Secret` keys are stored in production `.env` configuration.

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import { type FC, memo } from "react";
 
-export const IconWrapper: FC<FontAwesomeIconProps> = memo(({
+export const Icon: FC<FontAwesomeIconProps> = memo(({
   icon,
   style,
   className,
@@ -16,4 +16,4 @@ export const IconWrapper: FC<FontAwesomeIconProps> = memo(({
   </div>
 ));
 
-IconWrapper.displayName = "IconWrapper";
+Icon.displayName = "Icon";

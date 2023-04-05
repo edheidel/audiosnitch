@@ -1,71 +1,80 @@
-import { FC } from "react";
+import type { FC } from "react";
 import {
-  Avatar,
   IconButton,
   Skeleton,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { faSpotify, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
+import Image from "next/image";
+import { getArtistImageSrc } from "../../utils/getArtistImageSrc";
 import { artistStore } from "../../store/artistStore";
 
-import { IconWrapper } from "../common/icon-wrapper/IconWrapper";
+import { Icon } from "../common/icon-wrapper/IconWrapper";
 
 import styles from "./ArtistPhoto.module.scss";
 
 export const ArtistPhoto: FC = observer(() => {
   const { artist, isArtistLoading } = artistStore;
-
-  if (isArtistLoading) {
-    return (
-      <div
-        className={styles.container}
-        data-testid="artist-photo-loading"
-      >
-        <Skeleton variant="circular" width={150} height={150} />
-      </div>
-    );
-  }
+  const spotifyUrl = `https://open.spotify.com/artist/${artist?.id}`;
+  const youtubeUrl = `https://www.youtube.com/results?search_query=${artist?.name.replace(/&/gi, "")}%2C+music`;
 
   return (
     <div
-      className={styles.container}
+      className={styles.wrapper}
       data-testid="artist-photo"
     >
-      <Avatar
-        src={artist?.images[1]?.url}
-        alt={artist?.name}
-        sx={{
-          width: 150,
-          height: 150,
-        }}
+      <Skeleton
+        variant="circular"
+        width={150}
+        height={150}
       />
+
+      {!isArtistLoading && (
+        <div
+          className={styles.photo}
+        >
+          <Image
+            src={getArtistImageSrc(artist, 200)}
+            alt={artist.name}
+            width={150}
+            height={150}
+            priority
+            objectFit="cover"
+            objectPosition="top"
+          />
+        </div>
+      )}
+
       <div
-        className={styles.buttonWrapper}
+        className={styles.buttons}
       >
         <IconButton
           aria-label="play on spotify"
-          href={`https://open.spotify.com/artist/${artist?.id}`}
+          href={spotifyUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <IconWrapper
+          <Icon
             icon={faSpotify}
-            style={{ color: "#1db954", fontSize: "2rem" }}
+            style={{
+              color: "#1db954",
+              fontSize: "2rem",
+            }}
           />
         </IconButton>
-
         <IconButton
           aria-label="play on youtube"
-          href={
-              `https://www.youtube.com/results?search_query=${artist?.name.replace(/&/gi, "")}%2C+music`
-            }
+          href={youtubeUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <IconWrapper
+          <Icon
             icon={faYoutube}
-            style={{ color: "#da0000", fontSize: "2rem" }}
+            style={{
+              color: "#da0000",
+              fontSize: "2rem",
+            }}
           />
         </IconButton>
       </div>

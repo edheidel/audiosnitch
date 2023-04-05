@@ -15,8 +15,8 @@ interface DragAndDropOverlayProps {
 }
 
 /**
- * An overlay that allows a user to drag an artist to the app directly from the Spotify player,
- * instead of manually typing artist's name inside the search bar.
+ * An overlay that allows a user to drag an artist to the app directly from the Spotify player, as an
+ * alternative to typing artist's name inside the search bar.
  */
 export const DragAndDropOverlay: FC<DragAndDropOverlayProps> = observer(({
   isDragging,
@@ -26,7 +26,7 @@ export const DragAndDropOverlay: FC<DragAndDropOverlayProps> = observer(({
 }) => {
   const { isDesktop } = useDevice();
 
-  // Render the component for the desktop version of the app.
+  // Render the component for the desktop version of the app
   return isDesktop ? (
     <div
       className={styles.dropContainer}
@@ -36,9 +36,14 @@ export const DragAndDropOverlay: FC<DragAndDropOverlayProps> = observer(({
     >
       <div className={styles.dropArea}>
         <div className={styles.dropAreaText}>
-          {isDragging ? "Release to drop" : "Drop an artist here"}
+          {isDragging
+            ? "Release to drop"
+            : "Drop an artist here"}
         </div>
-        <FontAwesomeIcon className={styles.dropAreaIcon} icon={faSpotify} />
+        <FontAwesomeIcon
+          className={styles.dropAreaIcon}
+          icon={faSpotify}
+        />
       </div>
       <div className={styles.dropOverlay} />
     </div>
