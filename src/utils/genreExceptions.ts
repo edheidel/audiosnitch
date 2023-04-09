@@ -38,4 +38,8 @@ export const genreExceptions: GenreExceptions = {
     wikiUrl: "",
     isValidUrl: false,
   },
+  zolo: {
+    wikiUrl: "",
+    isValidUrl: false,
+  },
 };
