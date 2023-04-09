@@ -15,7 +15,9 @@ export const GenreChips: FC = observer(() => {
     <>
       {(isValidatingGenres) && (
         <Skeleton
-          sx={{ fontSize: "2rem" }}
+          sx={{
+            fontSize: "2.4rem",
+          }}
         />
       )}
 

@@ -7,28 +7,44 @@ import { artistStore } from "../../store/artistStore";
 import { SimilarArtistList } from "./similar-artist-list/SimilarArtistList";
 
 import styles from "./SimilarArtistContainer.module.scss";
+import { SimilarArtistSkeleton } from "./similar-artist-skeleton/SimilarArtistSkeleton";
 
 export const SimilarArtistContainer: FC = observer(() => {
-  const { artist, isArtistLoading, isSimilarArtistsLoaded } = artistStore;
+  const {
+    artist,
+    isArtistLoading,
+    isSimilarArtistsLoaded,
+    isSimilarArtistsLoading,
+  } = artistStore;
 
   return artist.genres.length > 0 && isSimilarArtistsLoaded ? (
     <>
       {isArtistLoading && (
-        <Skeleton
-          sx={{
-            fontSize: "2.5rem",
-            marginTop: "0.5rem",
-            marginBottom: "0.75rem",
-          }}
-        />
+        <div>
+          <Skeleton
+            sx={{
+              fontSize: "2.3rem",
+              marginTop: "0.5rem",
+              marginBottom: "0.5rem",
+            }}
+          />
+        </div>
       )}
       {!isArtistLoading && (
         <h3>More artists like {artist.name}</h3>
       )}
+
       <div className={styles.container}>
-        <SimilarArtistList
-          displayArtistCount={15}
-        />
+        {isSimilarArtistsLoading && (
+          <SimilarArtistSkeleton
+            displayArtistCount={15}
+          />
+        )}
+        {!isSimilarArtistsLoading && (
+          <SimilarArtistList
+            displayArtistCount={15}
+          />
+        )}
       </div>
     </>
   ) : null;

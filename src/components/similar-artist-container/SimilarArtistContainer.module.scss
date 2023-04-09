@@ -1,6 +1,6 @@
 .container {
   z-index: 3;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   margin-bottom: 3rem;
 }
