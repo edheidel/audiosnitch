@@ -19,7 +19,9 @@ const Artist: FC = observer(() => {
     return (
       <div
         data-testid="artist-fallback"
-        style={{ marginTop: "4rem" }}
+        style={{
+          marginTop: "4rem",
+        }}
       >
         <h2>Ooops, something went wrong 😵</h2>
         <h4>Try again or search for other artist</h4>
@@ -29,7 +31,14 @@ const Artist: FC = observer(() => {
 
   // Make sure that the store contains any artist data before rendering the container
   return artistExists ? (
-    <div data-testid="artist-container">
+    <div
+      data-testid="artist-container"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
       <ArtistPhoto />
       <ChipContainer />
       <SimilarArtistContainer />

@@ -75,8 +75,7 @@ class ArtistStore {
         this.list = json?.artists?.items ?? [];
       });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("🔥 Failed to fetch artist list:", error);
+      console.error("🔥 Failed to fetch artist list:", error); // eslint-disable-line no-console
     } finally {
       runInAction(() => {
         this.isListLoading = false;
@@ -128,7 +127,7 @@ class ArtistStore {
       });
     } catch (error) {
       runInAction(() => {
-        // Failure flag in case of error to control UI fall-backs
+        // Failure flag in case of error to control UI fall-back options
         this.isArtistLoadingFailed = true;
       });
     } finally {
@@ -149,12 +148,11 @@ class ArtistStore {
       const response = await fetch(`/api/related-artists/${spotifyArtistId}`);
       const json = await response.json();
       runInAction(() => {
-        // The API response is expected to contain an "artists" array with a list of similar artists.
+        // Store response of similar artist array
         this.similarArtists = json?.artists ?? [];
       });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("🔥 Failed to fetch similar artists:", error);
+      console.error("🔥 Failed to fetch similar artists:", error); // eslint-disable-line no-console
     } finally {
       runInAction(() => {
         this.isSimilarArtistsLoading = false;
