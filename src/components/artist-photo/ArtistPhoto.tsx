@@ -42,6 +42,7 @@ export const ArtistPhoto: FC = observer(() => {
             priority
             objectFit="cover"
             objectPosition="top"
+            unoptimized
           />
         </div>
       )}

@@ -99,9 +99,9 @@ export const SimilarArtistList: FC<SimilarArtistListProps> = observer(({ display
                 alt="artist photo small"
                 width={40}
                 height={40}
-                sizes="40px"
                 objectFit="cover"
                 objectPosition="top"
+                unoptimized
               />
             </div>
             <ListItemText
